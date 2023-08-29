@@ -91,7 +91,8 @@
             android:layout_marginTop="20dp"
             android:gravity="center"
             android:background="@drawable/rounded_button"
-            android:text="@string/login" />
+            android:text="@string/login"
+            android:textAllCaps="true" />
 
         <!-- Google Sign in -->
         <com.google.android.gms.common.SignInButton
