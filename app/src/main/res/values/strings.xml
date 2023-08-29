@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">SuitCase</string>
+
+    <!--  Common  -->
+    <string name="enter_email">Enter Email</string>
+    <string name="enter_password">Enter Password</string>
+    <string name="enter_confirm_password">Confirm Password</string>
+    <string name="logout">Logout</string>
+
+    <!--  Splash Screen  -->
+    <string name="splash_text">Splash Screen</string>
+
+    <!--  Login Activity  -->
+    <string name="suit_case">SUITCASE</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="login">Login</string>
+    <string name="no_account">Don\'t have an account?</string>
+    <string name="register_here">Register Here!</string>
+
+    <!--  Register Activity  -->
+    <string name="tv_register_info">Create a new Account.</string>
+    <string name="enter_name">Enter Name</string>
+    <string name="registration">Registration</string>
+    <string name="register">Register</string>
+    <string name="have_account">Already have an Account?</string>
+    <string name="login_here">Login Here!</string>
+
+    <!--  Forgot Password  -->
+    <string name="reset_password">Reset Password</string>
+    <string name="forgot_password_info">Reset link will be sent to the mail provided below.</string>
+
+    <!--  Home Activity  -->
+    <string name="greeting_text">Welcome to SuitCase!</string>
+    <string name="greeting_text2">How are you today?</string>
+
+</resources>
