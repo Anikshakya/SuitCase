@@ -5,8 +5,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.ismt.suitcase.R
 import com.ismt.suitcase.databinding.ActivityRegisterBinding
 
@@ -14,6 +14,7 @@ class RegisterActivity : AppCompatActivity() {
     //Initialization
     private lateinit var viewBinding : ActivityRegisterBinding
     private lateinit var auth: FirebaseAuth
+    private lateinit var db: FirebaseFirestore
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,6 +23,7 @@ class RegisterActivity : AppCompatActivity() {
 
         //Binding
         auth = FirebaseAuth.getInstance()
+        db = FirebaseFirestore.getInstance()
         viewBinding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
 
@@ -52,7 +54,45 @@ class RegisterActivity : AppCompatActivity() {
             }
             else{
                 //Register Using Firebase
-                firebaseRegister(email, password)
+                firebaseRegister(name, email, password)
+                clearInputFields()
+
+//                //Run Room database in new thread to stop screen freeze and rec by room
+//                Thread{
+//                    try {
+//                        //Data from register form
+//                        val user = User(
+//                            name,
+//                            email,
+//                            password,
+//                        )
+//                        //Insert into Room Database
+//                        val testDatabase = UserDatabase.getInstance(applicationContext) //Instantiate test database
+//                        val userDao = testDatabase.userDao() //Instantiate userDao
+//                        val userExistInDb = userDao.checkUserExist(email)
+//                        if(userExistInDb == null) {
+//                            userDao.insertUser(user)
+//                            runOnUiThread {
+//                                ToastUtils.showToast(this, "User Registered")
+//                            }
+//                            //Clear input fields
+//                            clearInputFields()
+//                            //Redirect
+//                            val intent = Intent(this, LoginActivity::class.java)
+//                            startActivity(intent)
+//                            finish()
+//                        } else {
+//                            runOnUiThread {
+//                                ToastUtils.showToast(this, "User already exists")
+//                            }
+//                        }
+//                    } catch (e: Exception){
+//                        runOnUiThread {
+//                            ToastUtils.showToast(this, "Couldn't register user!")
+//                        }
+//                        e.printStackTrace()
+//                    }
+//                }.start()
             }
         }
 
@@ -80,10 +120,12 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     //Register User in Firebase
-    private fun firebaseRegister(email : String, password : String){
+    private fun firebaseRegister(name: String, email : String, password : String){
         startLoading()
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this) { task ->
             if (task.isSuccessful) {
+                //Store User to Firestore
+                storeUserToFirestore(name, email)
                 stopLoading()
                 ToastUtils.showToast(this, "User Registered")
                 //Redirect to login screen
@@ -94,6 +136,26 @@ class RegisterActivity : AppCompatActivity() {
                 stopLoading()
                 ToastUtils.showToast(this, task.exception?.message.toString())
             }
+        }
+    }
+
+    //Store user in Firestore
+    private fun storeUserToFirestore(name: String, email : String){
+        //Store in Firestore
+        val userData = HashMap<String,Any>()
+        userData["firstName"] = name
+        userData["email"] = email
+        userData["profileUrl"] = ""
+
+        db.collection("users").document(email).set(userData)
+            .addOnSuccessListener {
+            //Redirect to login screen
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+        .addOnFailureListener {
+            ToastUtils.showToast(this,"Unable To add user Data")
         }
     }
 
