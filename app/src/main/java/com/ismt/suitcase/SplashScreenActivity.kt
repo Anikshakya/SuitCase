@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import com.ismt.suitcase.constants.AppConstants
 import com.ismt.suitcase.utils.SharedPrefUtils
-import com.ismt.suitcase.view.HomeActivity
+import com.ismt.suitcase.view.home.HomeActivity
 import com.ismt.suitcase.view.LoginActivity
 
 class SplashScreenActivity : AppCompatActivity() {

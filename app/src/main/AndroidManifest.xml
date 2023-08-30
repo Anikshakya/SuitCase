@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.ismt.suitcase">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -23,7 +25,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.HomeActivity"
+            android:name=".view.home.HomeActivity"
             android:exported="false" />
         <activity
             android:name=".view.ForgotPasswordActivity"

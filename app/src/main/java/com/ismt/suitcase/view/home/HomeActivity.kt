@@ -1,12 +1,14 @@
-package com.ismt.suitcase.view
+package com.ismt.suitcase.view.home
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.google.firebase.auth.FirebaseAuth
 import com.ismt.suitcase.R
 import com.ismt.suitcase.constants.AppConstants
 import com.ismt.suitcase.databinding.ActivityHomeBinding
 import com.ismt.suitcase.utils.SharedPrefUtils
+import com.ismt.suitcase.view.LoginActivity
 
 class HomeActivity : AppCompatActivity() {
     //Initialization
@@ -28,6 +30,7 @@ class HomeActivity : AppCompatActivity() {
             sharedPref.removeKey(AppConstants.KEY_IS_LOGGED_IN)
             sharedPref.removeKey(AppConstants.KEY_EMAIL)
 
+            FirebaseAuth.getInstance().signOut()
             val intent = Intent(this, LoginActivity :: class.java)
             startActivity(intent)
             finish()

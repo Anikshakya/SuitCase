@@ -3,18 +3,23 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Anik/Ismt Assignments/AMD/SuitCase/app/src/main/res/drawable/bottom_nav_rounded.xml" value="0.1" />
         <entry key="..\:/Anik/Ismt Assignments/AMD/SuitCase/app/src/main/res/drawable/custom_text_field.xml" value="0.1" />
         <entry key="..\:/Anik/Ismt Assignments/AMD/SuitCase/app/src/main/res/drawable/ic_add.xml" value="0.1035" />
         <entry key="..\:/Anik/Ismt Assignments/AMD/SuitCase/app/src/main/res/drawable/ic_back_ios.xml" value="0.1" />
         <entry key="..\:/Anik/Ismt Assignments/AMD/SuitCase/app/src/main/res/drawable/ic_email.xml" value="0.1" />
+        <entry key="..\:/Anik/Ismt Assignments/AMD/SuitCase/app/src/main/res/drawable/ic_home.xml" value="0.1" />
         <entry key="..\:/Anik/Ismt Assignments/AMD/SuitCase/app/src/main/res/drawable/ic_lock.xml" value="0.1" />
         <entry key="..\:/Anik/Ismt Assignments/AMD/SuitCase/app/src/main/res/drawable/ic_person.xml" value="0.1" />
+        <entry key="..\:/Anik/Ismt Assignments/AMD/SuitCase/app/src/main/res/drawable/ic_plan.xml" value="0.1" />
         <entry key="..\:/Anik/Ismt Assignments/AMD/SuitCase/app/src/main/res/drawable/rounded_button.xml" value="0.1" />
         <entry key="..\:/Anik/Ismt Assignments/AMD/SuitCase/app/src/main/res/layout/activity_forgot_password.xml" value="0.1" />
         <entry key="..\:/Anik/Ismt Assignments/AMD/SuitCase/app/src/main/res/layout/activity_home.xml" value="0.14" />
         <entry key="..\:/Anik/Ismt Assignments/AMD/SuitCase/app/src/main/res/layout/activity_login.xml" value="0.17074275362318841" />
         <entry key="..\:/Anik/Ismt Assignments/AMD/SuitCase/app/src/main/res/layout/activity_register.xml" value="0.1" />
         <entry key="..\:/Anik/Ismt Assignments/AMD/SuitCase/app/src/main/res/layout/activity_splash.xml" value="0.1" />
+        <entry key="..\:/Anik/Ismt Assignments/AMD/SuitCase/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.1" />
+        <entry key="..\:/Anik/Ismt Assignments/AMD/SuitCase/app/src/main/res/menu/menu.xml" value="0.1" />
       </map>
     </option>
   </component>

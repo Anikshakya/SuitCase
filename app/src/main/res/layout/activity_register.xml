@@ -124,6 +124,13 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <ProgressBar
+            android:id="@+id/pb_registerLoading"
+            android:layout_marginVertical="25dp"
+            android:gravity="center"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <!-- Register  Button -->
         <Button
