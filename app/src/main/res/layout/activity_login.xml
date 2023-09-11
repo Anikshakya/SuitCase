@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/activityBackground"
     tools:context=".view.LoginActivity">
 
     <LinearLayout
@@ -102,6 +103,15 @@
             android:background="@drawable/rounded_button"
             android:text="@string/login"
             android:textAllCaps="true" />
+
+        //Google Login Loading indicator
+        <ProgressBar
+            android:id="@+id/pb_googleLoginLoading"
+            android:layout_marginVertical="25dp"
+            android:gravity="center"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <!-- Google Sign in -->
         <com.google.android.gms.common.SignInButton

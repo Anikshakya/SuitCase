@@ -5,4 +5,5 @@
     <color name="red">#ff5c4a</color>
     <color name="blue">#834aff</color>
     <color name="grey">#787878</color>
+    <color name="activityBackground">#faf8ec</color>
 </resources>

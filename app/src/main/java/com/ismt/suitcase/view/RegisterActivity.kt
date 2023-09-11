@@ -55,7 +55,6 @@ class RegisterActivity : AppCompatActivity() {
             else{
                 //Register Using Firebase
                 firebaseRegister(name, email, password)
-                clearInputFields()
 
 //                //Run Room database in new thread to stop screen freeze and rec by room
 //                Thread{
@@ -113,7 +112,7 @@ class RegisterActivity : AppCompatActivity() {
 
     //Clear input fields data
     private fun clearInputFields(){
-        viewBinding.etEmail.text?.clear()
+        viewBinding.etName.text?.clear()
         viewBinding.etEmail.text?.clear()
         viewBinding.etPassword.text?.clear()
         viewBinding.etConfirmPassword.text?.clear()
@@ -128,6 +127,8 @@ class RegisterActivity : AppCompatActivity() {
                 storeUserToFirestore(name, email)
                 stopLoading()
                 ToastUtils.showToast(this, "User Registered")
+                auth.signOut()
+                clearInputFields()
                 //Redirect to login screen
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
