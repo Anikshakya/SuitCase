@@ -2,16 +2,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/home"
+        android:id="@+id/explore"
         android:enabled="true"
         android:icon="@drawable/ic_home"
-        android:title="Home" />
+        android:title="Explore" />
 
     <item
-        android:id="@+id/plan"
+        android:id="@+id/shop"
         android:enabled="true"
         android:icon="@drawable/ic_plan"
-        android:title="Plan" />
+        android:title="Shop" />
 
     <item
         android:id="@+id/profile"

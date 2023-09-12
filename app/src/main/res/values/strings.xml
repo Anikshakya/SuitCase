@@ -32,5 +32,13 @@
     <!--  Home Activity  -->
     <string name="greeting_text">Welcome to SuitCase!</string>
     <string name="greeting_text2">How are you today?</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--  Explore Fragment-->
+    <string name="explore_heading">Explore</string>
+    <!--  Shop Fragment-->
+    <string name="shop_heading">Your Items</string>
+    <!--  Profile Fragment-->
 
 </resources>
