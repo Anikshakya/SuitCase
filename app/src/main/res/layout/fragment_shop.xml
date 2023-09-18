@@ -29,7 +29,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_shop_heading" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_add_plan"
+        android:id="@+id/fab_add_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"

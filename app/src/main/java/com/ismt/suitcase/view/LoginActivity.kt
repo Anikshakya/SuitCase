@@ -177,23 +177,23 @@ class LoginActivity : AppCompatActivity() {
                             } else {
                                 // Stop Google Login Loading
                                 stopGoogleLoading()
-                                Toast.makeText(this, "Couldn't Sign In", Toast.LENGTH_LONG).show()
+                                ToastUtils.showToast(this, "Couldn't Sign In")
                             }
                         }
                 } else {
                     // Handle case where user didn't select an account
                     stopGoogleLoading()
-                    Toast.makeText(this, "Google Sign-In Failed: No account selected", Toast.LENGTH_LONG).show()
+                    ToastUtils.showToast(this, "Google Sign-In Failed: No account selected")
                 }
             } catch (e: ApiException) {
                 // Handle the exception
                 stopGoogleLoading()
-                Toast.makeText(this, "Google Sign-In Failed: " + e.localizedMessage, Toast.LENGTH_LONG).show()
+                ToastUtils.showToast(this, "Google Sign-In Failed: " + e.localizedMessage)
             }
         } else {
             // Handle case where result is null
             stopGoogleLoading()
-            Toast.makeText(this, "Google Sign-In Failed: No result", Toast.LENGTH_LONG).show()
+            ToastUtils.showToast(this, "Google Sign-In Failed: No result")
         }
     }
 
