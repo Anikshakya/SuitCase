@@ -6,20 +6,20 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 @Database(entities = [User:: class], version = 1)
-abstract class UserDatabase : RoomDatabase(){
+abstract class SuitcaseDatabase : RoomDatabase(){
     abstract fun userDao(): UserDao
 
     //Creating Instance of the DataBase
     companion object{
         @Volatile
-        private var INSTANCE: UserDatabase? = null
+        private var INSTANCE: SuitcaseDatabase? = null
         private const val DB_NAME = "user.db"
 
-        fun getInstance(context: Context) : UserDatabase{
+        fun getInstance(context: Context) : SuitcaseDatabase{
             if(INSTANCE == null){
                 INSTANCE = Room.databaseBuilder(
                     context,
-                    UserDatabase::class.java,
+                    SuitcaseDatabase::class.java,
                     DB_NAME
                 ).build()
             }
