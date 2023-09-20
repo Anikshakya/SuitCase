@@ -6,9 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.ismt.suitcase.R
 import com.ismt.suitcase.databinding.FragmentShopBinding
-import com.ismt.suitcase.view.home.AddAndUpdateActivity
+import com.ismt.suitcase.view.home.AddOrUpdateActivity
 
 class ShopFragment : Fragment() {
     private lateinit var shopBinding: FragmentShopBinding
@@ -37,7 +36,7 @@ class ShopFragment : Fragment() {
 
     private fun setUpFloatingActionButton() {
         shopBinding.fabAddItem.setOnClickListener {
-            val intent = Intent(requireActivity(), AddAndUpdateActivity::class.java)
+            val intent = Intent(requireActivity(), AddOrUpdateActivity::class.java)
             startActivity(intent)
 //            startAddOrUpdateActivityForResult.launch(intent)
         }
