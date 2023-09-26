@@ -79,7 +79,7 @@ class AddOrUpdateActivity : AppCompatActivity() {
                         //Stop Submit Button Loading
                         stopLoading()
 
-                        ToastUtils.showToast(this, "Product Added Successfully!")
+                        ToastUtils.showToast(this, "Product Added!")
                         setResultWithFinish(RESULT_CODE_COMPLETE)
                     }
                 } catch (e : Exception) {
