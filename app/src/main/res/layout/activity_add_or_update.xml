@@ -109,7 +109,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         app:cornerRadius="0dp"
-        android:backgroundTint="@android:color/holo_green_light"
+        android:backgroundTint="@color/grey"
         android:drawableLeft="@drawable/ic_location"
         android:text="Click to add Location"
         />

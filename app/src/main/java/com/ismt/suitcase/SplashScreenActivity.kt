@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import com.ismt.suitcase.constants.AppConstants
 import com.ismt.suitcase.utils.SharedPrefUtils
-import com.ismt.suitcase.view.home.HomeActivity
+import com.ismt.suitcase.view.home.DashboardActivity
 import com.ismt.suitcase.view.LoginActivity
 
 class SplashScreenActivity : AppCompatActivity() {
@@ -21,7 +21,7 @@ class SplashScreenActivity : AppCompatActivity() {
             val isLoggedIn = sharedPref.getBoolean(AppConstants.KEY_IS_LOGGED_IN)
 
             val intentLogin = Intent(this, LoginActivity::class.java)
-            val intentHome = Intent(this, HomeActivity::class.java)
+            val intentHome = Intent(this, DashboardActivity::class.java)
 
             if(isLoggedIn){
                 startActivity(intentHome)

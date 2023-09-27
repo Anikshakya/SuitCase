@@ -31,7 +31,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.home.HomeActivity"
+            android:name=".view.home.DashboardActivity"
             android:exported="false" />
         <activity
             android:name=".view.ForgotPasswordActivity"

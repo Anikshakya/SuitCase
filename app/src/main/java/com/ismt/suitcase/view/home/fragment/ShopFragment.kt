@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.view.menu.MenuAdapter
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ismt.suitcase.databinding.FragmentShopBinding
 import com.ismt.suitcase.room.Product
@@ -95,14 +97,25 @@ class ShopFragment : Fragment(), ProductRecyclerAdapter.ProductAdapterListener {
         )
         shopBinding.rvShop.adapter = productRecyclerAdapter
         shopBinding.rvShop.layoutManager = LinearLayoutManager(requireActivity())
+
+        // TODO add grid layout
+//        shopBinding.rvShop.layoutManager = GridLayoutManager(activity, 2)
+//        (shopBinding.rvShop.layoutManager as GridLayoutManager).spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+//            override fun getSpanSize(position: Int): Int {
+//                return when (adapter.getItemViewType(position)) {
+//                    MenuAdapter.ITEM -> 1
+//                    MenuAdapter.FULLSIZE -> 2
+//                    else -> 1
+//                }
+//            }
+//        }
     }
 
 
     private fun setUpFloatingActionButton() {
         shopBinding.fabAddItem.setOnClickListener {
             val intent = Intent(requireActivity(), AddOrUpdateActivity::class.java)
-            startActivity(intent)
-//            startAddOrUpdateActivityForResult.launch(intent)
+            startAddOrUpdateActivityForResult.launch(intent)
         }
     }
 

@@ -4,7 +4,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -16,7 +15,7 @@ import com.ismt.suitcase.R
 import com.ismt.suitcase.constants.AppConstants
 import com.ismt.suitcase.databinding.ActivityLoginBinding
 import com.ismt.suitcase.utils.SharedPrefUtils
-import com.ismt.suitcase.view.home.HomeActivity
+import com.ismt.suitcase.view.home.DashboardActivity
 
 class LoginActivity : AppCompatActivity() {
     //Initialization
@@ -33,7 +32,7 @@ class LoginActivity : AppCompatActivity() {
         val currentUser = auth.currentUser
         if (currentUser != null) {
             //Navigate to Home Page
-            val intent = Intent(this, HomeActivity :: class.java)
+            val intent = Intent(this, DashboardActivity :: class.java)
             intent.putExtra(AppConstants.KEY_EMAIL, currentUser.email)//Send Data to next page
             startActivity(intent)
             finish()
@@ -120,7 +119,7 @@ class LoginActivity : AppCompatActivity() {
                 ToastUtils.showToast(this, "Logged in Successfully")
 
                 //Navigate to Home Page
-                val intent = Intent(this, HomeActivity :: class.java)
+                val intent = Intent(this, DashboardActivity :: class.java)
                 intent.putExtra(AppConstants.KEY_EMAIL, email)//Send Data to next page
                 startActivity(intent)
                 finish()
@@ -170,7 +169,7 @@ class LoginActivity : AppCompatActivity() {
                                 stopGoogleLoading()
 
                                 //Navigate to next page
-                                val intent = Intent(this, HomeActivity::class.java)
+                                val intent = Intent(this, DashboardActivity::class.java)
                                 intent.putExtra(AppConstants.KEY_EMAIL, account.email.toString())//Send Data to next page
                                 startActivity(intent)
                                 finish()

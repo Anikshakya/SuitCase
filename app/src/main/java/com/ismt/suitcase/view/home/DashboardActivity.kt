@@ -4,25 +4,25 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.ismt.suitcase.R
-import com.ismt.suitcase.databinding.ActivityHomeBinding
+import com.ismt.suitcase.databinding.ActivityDashboardBinding
 import com.ismt.suitcase.view.home.fragment.ExploreFragment
 import com.ismt.suitcase.view.home.fragment.ProfileFragment
 import com.ismt.suitcase.view.home.fragment.ShopFragment
 
-class HomeActivity : AppCompatActivity() {
+class DashboardActivity : AppCompatActivity() {
     //Initialization
-    private val tag = "HomeActivity"
-    private lateinit var viewBinding : ActivityHomeBinding
+    private val tag = "DashboardActivity"
+    private lateinit var viewBinding : ActivityDashboardBinding
     private val exploreFragment = ExploreFragment.newInstance()
     private val shopFragment = ShopFragment.newInstance()
     private val profileFragment = ProfileFragment.newInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
+        setContentView(R.layout.activity_dashboard)
 
         //Binding
-        viewBinding = ActivityHomeBinding.inflate(layoutInflater)
+        viewBinding = ActivityDashboardBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
 
         //Set view acc to selected item in bottom nav
@@ -35,7 +35,8 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun setupFragmentContainerView() {
-        loadFragmentInFcv(shopFragment)
+        loadFragmentInFcv(shopFragment) // selects the initial page to show in the bottom nav
+        viewBinding.bottomNavigationView.selectedItemId = R.id.shop // Set the initial selected index of the bottom nav
     }
 
     private fun setUpBottomNavigationView() {
