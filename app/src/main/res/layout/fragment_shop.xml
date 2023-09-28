@@ -24,7 +24,15 @@
             android:layout_height="wrap_content"
             android:text="@string/shop_heading"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textSize="18sp"/>
+            android:textSize="24sp"/>
+
+        <TextView
+            android:id="@+id/tv_shop_heading2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/shop_heading"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textSize="14sp"/>
 
         <EditText
             android:id="@+id/editTextSearch"
@@ -48,6 +56,7 @@
         android:id="@+id/rv_shop"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:background="@color/softGrey"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
