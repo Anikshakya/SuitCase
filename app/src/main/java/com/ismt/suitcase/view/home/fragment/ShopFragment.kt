@@ -10,6 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.view.menu.MenuAdapter
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.ismt.suitcase.constants.AppConstants
 import com.ismt.suitcase.databinding.FragmentShopBinding
 import com.ismt.suitcase.room.Product
 import com.ismt.suitcase.room.SuitcaseDatabase
@@ -48,6 +49,17 @@ class ShopFragment : Fragment(), ProductRecyclerAdapter.ProductAdapterListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) {
+            if (it.resultCode == ProductDetailActivity.RESULT_CODE_REFRESH) {
+                setUpRecyclerView()
+            } else {
+                //Do Nothing
+            }
+        }
+
         shopBinding = FragmentShopBinding.inflate(layoutInflater, container, false)
         // Inflate the layout for this fragment
         setUpViews()
@@ -121,6 +133,8 @@ class ShopFragment : Fragment(), ProductRecyclerAdapter.ProductAdapterListener {
 
     override fun onItemClicked(product: Product, position: Int) {
         val intent = Intent(requireActivity(), ProductDetailActivity::class.java)
+        intent.putExtra(AppConstants.KEY_PRODUCT, product)
+        intent.putExtra(AppConstants.KEY_PRODUCT_POSITION, position)
         startDetailViewActivity.launch(intent)
     }
 }
