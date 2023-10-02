@@ -5,6 +5,7 @@
       <map>
         <entry key="..\:/Anik/Ismt Assignments/AMD assignment (Anik Shakya)/SuitCase/app/src/main/res/drawable/neumorphic_background.xml" value="0.106" />
         <entry key="..\:/Anik/Ismt Assignments/AMD assignment (Anik Shakya)/SuitCase/app/src/main/res/drawable/rounded_search.xml" value="0.106" />
+        <entry key="..\:/Anik/Ismt Assignments/AMD assignment (Anik Shakya)/SuitCase/app/src/main/res/drawable/rounded_shop_header.xml" value="0.106" />
         <entry key="..\:/Anik/Ismt Assignments/AMD assignment (Anik Shakya)/SuitCase/app/src/main/res/layout/activity_add_and_update.xml" value="0.1" />
         <entry key="..\:/Anik/Ismt Assignments/AMD assignment (Anik Shakya)/SuitCase/app/src/main/res/layout/activity_add_or_update.xml" value="0.25" />
         <entry key="..\:/Anik/Ismt Assignments/AMD assignment (Anik Shakya)/SuitCase/app/src/main/res/layout/activity_dashboard.xml" value="0.12864583333333332" />
@@ -20,7 +21,7 @@
         <entry key="..\:/Anik/Ismt Assignments/AMD assignment (Anik Shakya)/SuitCase/app/src/main/res/layout/fragment_plan2.xml" value="0.21331521739130435" />
         <entry key="..\:/Anik/Ismt Assignments/AMD assignment (Anik Shakya)/SuitCase/app/src/main/res/layout/fragment_profile.xml" value="0.21331521739130435" />
         <entry key="..\:/Anik/Ismt Assignments/AMD assignment (Anik Shakya)/SuitCase/app/src/main/res/layout/fragment_profile_fragement.xml" value="0.21331521739130435" />
-        <entry key="..\:/Anik/Ismt Assignments/AMD assignment (Anik Shakya)/SuitCase/app/src/main/res/layout/fragment_shop.xml" value="0.22" />
+        <entry key="..\:/Anik/Ismt Assignments/AMD assignment (Anik Shakya)/SuitCase/app/src/main/res/layout/fragment_shop.xml" value="0.1" />
         <entry key="..\:/Anik/Ismt Assignments/AMD assignment (Anik Shakya)/SuitCase/app/src/main/res/layout/product_list_tile.xml" value="0.10208333333333333" />
         <entry key="..\:/Anik/Ismt Assignments/AMD assignment (Anik Shakya)/SuitCase/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.22447916666666667" />
         <entry key="..\:/Anik/Ismt Assignments/AMD/SuitCase/app/src/main/res/drawable/bottom_nav_rounded.xml" value="0.1" />

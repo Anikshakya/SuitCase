@@ -4,12 +4,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.ismt.suitcase.R
+import com.ismt.suitcase.constants.AppConstants
 import com.ismt.suitcase.databinding.ActivityAddOrUpdateBinding
 import com.ismt.suitcase.room.Product
 import com.ismt.suitcase.room.SuitcaseDatabase
 
 class AddOrUpdateActivity : AppCompatActivity() {
     private lateinit var addOrUpdateBinding : ActivityAddOrUpdateBinding
+    private var receivedProduct: Product? = null
+    private var isForUpdate = false
 
     companion object{
         const val RESULT_CODE_COMPLETE = 1001
@@ -21,6 +24,16 @@ class AddOrUpdateActivity : AppCompatActivity() {
         //Bindings
         addOrUpdateBinding = ActivityAddOrUpdateBinding.inflate(layoutInflater)
         setContentView(addOrUpdateBinding.root)
+
+        // Recieved data
+        receivedProduct = intent.getParcelableExtra<Product>(AppConstants.KEY_PRODUCT)
+        receivedProduct?.apply {
+            isForUpdate = true
+            addOrUpdateBinding.tieTitle.setText(this.title)
+            addOrUpdateBinding.tiePrice.setText(this.price)
+            addOrUpdateBinding.tieDescription.setText(this.description)
+            //TODO for image and location
+        }
 
         // On Press of Back Button
         addOrUpdateBinding.ibBack.setOnClickListener {
@@ -64,24 +77,38 @@ class AddOrUpdateActivity : AppCompatActivity() {
                 ""
             )
 
+            // Set the id of the stored product in case of update
+            if (isForUpdate) {
+                product.id = receivedProduct!!.id
+            }
+
             //Instance of Existing Database
             val suitcaseDatabase = SuitcaseDatabase.getInstance(applicationContext)
             val productDao = suitcaseDatabase.productDao()
 
             Thread{
                 try {
-                    // Insert into Product Database
-                    productDao.insertNewProduct(product)
-                    runOnUiThread {
-                        //Clear the Input Fields
-                        clearInputFields()
-
-                        //Stop Submit Button Loading
-                        stopLoading()
-
-                        setResultWithFinish(RESULT_CODE_COMPLETE)
-
-                        ToastUtils.showToast(this, "Product Added!")
+                    if (isForUpdate) {
+                        productDao.updateProduct(product)
+                        runOnUiThread {
+                            //Clear the Input Fields
+                            clearInputFields()
+                            //Stop Submit Button Loading
+                            stopLoading()
+                            setResultWithFinish(RESULT_CODE_COMPLETE)
+                            ToastUtils.showToast(this, "Product Updated!")
+                        }
+                    } else {
+                        // Insert into Product Database
+                        productDao.insertNewProduct(product)
+                        runOnUiThread {
+                            //Clear the Input Fields
+                            clearInputFields()
+                            //Stop Submit Button Loading
+                            stopLoading()
+                            setResultWithFinish(RESULT_CODE_COMPLETE)
+                            ToastUtils.showToast(this, "Product Added!")
+                        }
                     }
                 } catch (e : Exception) {
                     e.printStackTrace()
@@ -89,7 +116,7 @@ class AddOrUpdateActivity : AppCompatActivity() {
                     stopLoading()
 
                     runOnUiThread {
-                        ToastUtils.showToast(this, "Couldn't Add Product!")
+                        ToastUtils.showToast(this, "Couldn't Add or Update Product!")
                     }
                 }
             }.start()

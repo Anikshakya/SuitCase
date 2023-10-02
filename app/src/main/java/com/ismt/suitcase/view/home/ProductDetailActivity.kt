@@ -1,16 +1,32 @@
 package com.ismt.suitcase.view.home
 
+import android.content.DialogInterface
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContracts
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.ismt.suitcase.R
 import com.ismt.suitcase.constants.AppConstants
 import com.ismt.suitcase.databinding.ActivityProductDetailBinding
 import com.ismt.suitcase.room.Product
+import com.ismt.suitcase.room.SuitcaseDatabase
 
 class ProductDetailActivity : AppCompatActivity() {
     private lateinit var detailViewBinding: ActivityProductDetailBinding
     private var product: Product? = null
     private var position: Int = -1
+
+    private val startAddItemActivity = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) {
+        if (it.resultCode == AddOrUpdateActivity.RESULT_CODE_COMPLETE) {
+            val product = it.data?.getParcelableExtra<Product>(AppConstants.KEY_PRODUCT)
+            populateDataToTheViews(product)
+        } else {
+            // TODO do nothing
+        }
+    }
 
     companion object {
         const val RESULT_CODE_REFRESH = 2001
@@ -24,5 +40,103 @@ class ProductDetailActivity : AppCompatActivity() {
         //Receiving Intent Data
         product = intent.getParcelableExtra(AppConstants.KEY_PRODUCT)
         position = intent.getIntExtra(AppConstants.KEY_PRODUCT_POSITION, -1)
+
+        // Populate product data in the view
+        populateDataToTheViews(product)
     }
+
+    // Populate
+    private fun populateDataToTheViews(product: Product?) {
+        product?.apply {
+            detailViewBinding.productTitle.text = this.title
+            detailViewBinding.productPrice.text = this.price
+            detailViewBinding.productDescription.text = this.description
+            // TODO populate image
+        }
+
+        // Set the buttons functionality in product details page
+        setUpButtons()
+    }
+
+    // Set Up Buttons
+    private fun setUpButtons() {
+        setUpBackButton()
+        setUpEditButton()
+        setUpDeleteButton()
+    }
+
+    // Back Button Behavior
+    private fun setUpBackButton() {
+        detailViewBinding.ibBack.setOnClickListener {
+            finish()
+        }
+    }
+
+    private fun setUpEditButton() {
+        detailViewBinding.ibEdit.setOnClickListener {
+            val intent = Intent(this, AddOrUpdateActivity::class.java).apply {
+                this.putExtra(AppConstants.KEY_PRODUCT, product)
+            }
+            startAddItemActivity.launch(intent)
+        }
+    }
+
+    private fun setUpDeleteButton() {
+        //TODO
+        detailViewBinding.ibDelete.setOnClickListener {
+            MaterialAlertDialogBuilder(this)
+                .setTitle("Alert")
+                .setMessage("Do you want to delete this product?")
+                .setPositiveButton(
+                    "Yes",
+                    DialogInterface.OnClickListener {
+                            dialogInterface,
+                            i -> deleteProduct()
+                    })
+                .setNegativeButton(
+                    "No",
+                    DialogInterface.OnClickListener {
+                            dialogInterface,
+                            i ->  dialogInterface.dismiss()
+
+                    })
+                .show()
+        }
+    }
+
+    // Delete Product
+    private fun deleteProduct() {
+        val testDatabase = SuitcaseDatabase.getInstance(this.applicationContext)
+        val productDao = testDatabase.productDao()
+
+        Thread {
+            try {
+                product?.apply {
+                    productDao.deleteProduct(this)
+                    runOnUiThread {
+                        ToastUtils.showToast(
+                            this@ProductDetailActivity,
+                            "Product deleted successfully"
+                        )
+                        setResultWithFinish(RESULT_CODE_REFRESH)
+                    }
+                }
+            } catch (exception: Exception) {
+                exception.printStackTrace()
+                runOnUiThread {
+                    ToastUtils.showToast(
+                        this@ProductDetailActivity,
+                        "Cannot delete product."
+                    )
+                }
+            }
+        }.start()
+    }
+
+    // Set the result with finish
+    private fun setResultWithFinish(resultCode: Int) {
+        setResult(resultCode)
+        finish()
+    }
+
 }
