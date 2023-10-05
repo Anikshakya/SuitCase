@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/softGrey"
     tools:context=".view.home.fragment.ShopFragment">
 
     <!-- LinearLayout containing TextView and EditText -->
@@ -14,7 +15,6 @@
         android:padding="20dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@drawable/rounded_shop_header"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -53,6 +53,8 @@
     </LinearLayout>
 
     <!-- RecyclerView -->
+
+    <!-- FloatingActionButton -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_shop"
         android:layout_width="0dp"
@@ -60,10 +62,11 @@
         android:background="@color/softGrey"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linear_layout" />
+        app:layout_constraintTop_toBottomOf="@+id/linear_layout"
+        app:layout_constraintVertical_bias="0.0" />
 
-    <!-- FloatingActionButton -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add_item"
         android:layout_width="wrap_content"

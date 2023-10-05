@@ -2,15 +2,21 @@ package com.ismt.suitcase.view.home
 
 import android.content.DialogInterface
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
+import android.view.KeyEvent
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.ismt.suitcase.R
 import com.ismt.suitcase.constants.AppConstants
 import com.ismt.suitcase.databinding.ActivityProductDetailBinding
 import com.ismt.suitcase.room.Product
 import com.ismt.suitcase.room.SuitcaseDatabase
+import com.ismt.suitcase.utils.BitmapScalar
+import java.io.IOException
 
 class ProductDetailActivity : AppCompatActivity() {
     private lateinit var detailViewBinding: ActivityProductDetailBinding
@@ -23,8 +29,6 @@ class ProductDetailActivity : AppCompatActivity() {
         if (it.resultCode == AddOrUpdateActivity.RESULT_CODE_COMPLETE) {
             val product = it.data?.getParcelableExtra<Product>(AppConstants.KEY_PRODUCT)
             populateDataToTheViews(product)
-        } else {
-            // TODO do nothing
         }
     }
 
@@ -37,12 +41,14 @@ class ProductDetailActivity : AppCompatActivity() {
         detailViewBinding = ActivityProductDetailBinding.inflate(layoutInflater)
         setContentView(detailViewBinding.root)
 
-        //Receiving Intent Data
+        // Receiving Intent Data
         product = intent.getParcelableExtra(AppConstants.KEY_PRODUCT)
         position = intent.getIntExtra(AppConstants.KEY_PRODUCT_POSITION, -1)
 
         // Populate product data in the view
         populateDataToTheViews(product)
+        // Set the buttons functionality in product details page
+        setUpButtons()
     }
 
     // Populate
@@ -51,11 +57,25 @@ class ProductDetailActivity : AppCompatActivity() {
             detailViewBinding.productTitle.text = this.title
             detailViewBinding.productPrice.text = this.price
             detailViewBinding.productDescription.text = this.description
-            // TODO populate image
+            detailViewBinding.productImage.post {
+                var bitmap: Bitmap?
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(
+                        applicationContext.contentResolver,
+                        Uri.parse(product.image)
+                    )
+                    bitmap = BitmapScalar.stretchToFill(
+                        bitmap,
+                        detailViewBinding.productImage.width,
+                        detailViewBinding.productImage.height
+                    )
+                    detailViewBinding.productImage.setImageBitmap(bitmap)
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+            }
+            // TODO populate location
         }
-
-        // Set the buttons functionality in product details page
-        setUpButtons()
     }
 
     // Set Up Buttons
@@ -68,7 +88,7 @@ class ProductDetailActivity : AppCompatActivity() {
     // Back Button Behavior
     private fun setUpBackButton() {
         detailViewBinding.ibBack.setOnClickListener {
-            finish()
+            setResultWithFinish(RESULT_CODE_REFRESH)
         }
     }
 
@@ -82,24 +102,16 @@ class ProductDetailActivity : AppCompatActivity() {
     }
 
     private fun setUpDeleteButton() {
-        //TODO
         detailViewBinding.ibDelete.setOnClickListener {
             MaterialAlertDialogBuilder(this)
                 .setTitle("Alert")
                 .setMessage("Do you want to delete this product?")
                 .setPositiveButton(
-                    "Yes",
-                    DialogInterface.OnClickListener {
-                            dialogInterface,
-                            i -> deleteProduct()
-                    })
+                    "Yes"
+                ) { dialogInterface, _ -> deleteProduct() }
                 .setNegativeButton(
-                    "No",
-                    DialogInterface.OnClickListener {
-                            dialogInterface,
-                            i ->  dialogInterface.dismiss()
-
-                    })
+                    "No"
+                ) { dialogInterface, _ -> dialogInterface.dismiss() }
                 .show()
         }
     }
@@ -139,4 +151,11 @@ class ProductDetailActivity : AppCompatActivity() {
         finish()
     }
 
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            setResultWithFinish(RESULT_CODE_REFRESH)
+            return true
+        }
+        return super.onKeyDown(keyCode, event)
+    }
 }

@@ -38,7 +38,7 @@
     <!--  Explore Fragment-->
     <string name="explore_heading">Explore</string>
     <!--  Shop Fragment-->
-    <string name="shop_heading">Your Items</string>
+    <string name="shop_heading">Product List</string>
     <!--  Profile Fragment-->
 
 </resources>

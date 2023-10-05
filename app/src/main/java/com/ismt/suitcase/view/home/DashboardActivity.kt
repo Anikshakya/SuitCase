@@ -53,11 +53,6 @@ class DashboardActivity : AppCompatActivity() {
                     true
                 }
 
-                R.id.profile -> {
-                    loadFragmentInFcv(profileFragment)
-                    true
-                }
-
                 else -> {
                     loadFragmentInFcv(profileFragment)
                     true

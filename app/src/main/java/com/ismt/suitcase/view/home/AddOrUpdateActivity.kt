@@ -1,22 +1,63 @@
 package com.ismt.suitcase.view.home
 
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.View
+import android.widget.LinearLayout
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.ismt.suitcase.R
 import com.ismt.suitcase.constants.AppConstants
 import com.ismt.suitcase.databinding.ActivityAddOrUpdateBinding
 import com.ismt.suitcase.room.Product
 import com.ismt.suitcase.room.SuitcaseDatabase
+import com.ismt.suitcase.utils.BitmapScalar
+import java.io.IOException
 
 class AddOrUpdateActivity : AppCompatActivity() {
     private lateinit var addOrUpdateBinding : ActivityAddOrUpdateBinding
     private var receivedProduct: Product? = null
     private var isForUpdate = false
+    private var imageUriPath = ""
 
     companion object{
         const val RESULT_CODE_COMPLETE = 1001
         const val RESULT_CODE_CANCEL = 1002
+        const val GALLERY_PERMISSION_REQUEST_CODE = 11
+    }
+
+    private val startCustomCameraActivityForResult = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()) {
+        if (it.resultCode == CustomCameraActivity.CAMERA_ACTIVITY_SUCCESS_RESULT_CODE) {
+            imageUriPath = it.data?.getStringExtra(CustomCameraActivity.CAMERA_ACTIVITY_OUTPUT_FILE_PATH)!!
+            loadThumbnailImage()
+        } else {
+            imageUriPath = ""
+            addOrUpdateBinding.ivAddImage.setImageResource(android.R.drawable.ic_menu_gallery)
+        }
+    }
+
+    // Start gallery activity expecting for result
+    private val startGalleryActivityForResult = registerForActivityResult(
+        ActivityResultContracts.OpenDocument()) {
+        if (it != null) {
+            imageUriPath = it.toString()
+            contentResolver.takePersistableUriPermission(
+                Uri.parse(imageUriPath),
+                Intent.FLAG_GRANT_READ_URI_PERMISSION
+            )
+            loadThumbnailImage()
+        } else {
+            imageUriPath = "";
+            addOrUpdateBinding.ivAddImage.setImageResource(android.R.drawable.ic_menu_gallery);
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,19 +66,41 @@ class AddOrUpdateActivity : AppCompatActivity() {
         addOrUpdateBinding = ActivityAddOrUpdateBinding.inflate(layoutInflater)
         setContentView(addOrUpdateBinding.root)
 
-        // Recieved data
+        // Received data
         receivedProduct = intent.getParcelableExtra<Product>(AppConstants.KEY_PRODUCT)
         receivedProduct?.apply {
             isForUpdate = true
             addOrUpdateBinding.tieTitle.setText(this.title)
             addOrUpdateBinding.tiePrice.setText(this.price)
             addOrUpdateBinding.tieDescription.setText(this.description)
-            //TODO for image and location
+            addOrUpdateBinding.ivAddImage.post {
+                var bitmap: Bitmap?
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(
+                        applicationContext.contentResolver,
+                        Uri.parse(this.image)
+                    )
+                    bitmap = BitmapScalar.stretchToFill(
+                        bitmap,
+                        addOrUpdateBinding.ivAddImage.width,
+                        addOrUpdateBinding.ivAddImage.height
+                    )
+                    addOrUpdateBinding.ivAddImage.setImageBitmap(bitmap)
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+            }
+            //TODO  location
         }
 
         // On Press of Back Button
         addOrUpdateBinding.ibBack.setOnClickListener {
             setResultWithFinish(RESULT_CODE_CANCEL)
+        }
+
+        // On Press of Image
+        addOrUpdateBinding.ivAddImage.setOnClickListener {
+            handleImageAddButtonClicked()
         }
 
         // On Submit Button Behaviour
@@ -73,7 +136,7 @@ class AddOrUpdateActivity : AppCompatActivity() {
                 title,
                 price,
                 desc,
-                "",
+                imageUriPath,
                 ""
             )
 
@@ -122,6 +185,99 @@ class AddOrUpdateActivity : AppCompatActivity() {
             }.start()
 
         }
+    }
+
+    // Handel the Pick Image
+    private fun handleImageAddButtonClicked() {
+        val pickImageBottomSheetDialog = BottomSheetDialog(this)
+        pickImageBottomSheetDialog.setContentView(R.layout.bottom_sheet_pick_image)
+
+        val linearLayoutPickByCamera: LinearLayout = pickImageBottomSheetDialog.findViewById(R.id.ll_pick_by_camera)!!
+        val linearLayoutPickByGallery: LinearLayout = pickImageBottomSheetDialog.findViewById(R.id.ll_pick_by_gallery)!!
+
+        linearLayoutPickByCamera.setOnClickListener {
+            pickImageBottomSheetDialog.dismiss()
+            startCameraActivity()
+        }
+        linearLayoutPickByGallery.setOnClickListener {
+            pickImageBottomSheetDialog.dismiss()
+            startGalleryToPickImage()
+        }
+
+        pickImageBottomSheetDialog.setCancelable(true)
+        pickImageBottomSheetDialog.show()
+    }
+
+    // Get required permission for camera
+    private fun getPermissionsRequiredForCamera(): List<String> {
+        val permissions: MutableList<String> = ArrayList()
+        permissions.add(Manifest.permission.CAMERA)
+        permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE)
+        permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        return permissions
+    }
+
+    // Start the Custom Camera Activity
+    private fun startCameraActivity() {
+        val intent = Intent(this, CustomCameraActivity::class.java)
+        startCustomCameraActivityForResult.launch(intent)
+    }
+
+    // Get permission for Gallery
+    private fun allPermissionForGalleryGranted(): Boolean {
+        var granted = false
+        for (permission in getPermissionsRequiredForCamera()) {
+            if (ContextCompat.checkSelfPermission(this, permission)
+                == PackageManager.PERMISSION_GRANTED
+            ) {
+                granted = true
+            }
+        }
+        return granted
+    }
+
+    // Start the Gallery Pick Image Action
+    private fun startGalleryToPickImage() {
+        if (allPermissionForGalleryGranted()) {
+            startActivityForResultFromGalleryToPickImage()
+        } else {
+            requestPermissions(
+                getPermissionsRequiredForCamera().toTypedArray(),
+                GALLERY_PERMISSION_REQUEST_CODE
+            )
+        }
+    }
+
+
+    private fun startActivityForResultFromGalleryToPickImage() {
+        val intent = Intent(
+            Intent.ACTION_OPEN_DOCUMENT,
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+        )
+//        intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        startGalleryActivityForResult.launch(arrayOf("image/*", "video/*"))
+    }
+
+    // Save the picked image
+    private fun loadThumbnailImage() {
+        addOrUpdateBinding.ivAddImage.post(Runnable {
+            var bitmap: Bitmap?
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(
+                    contentResolver,
+                    Uri.parse(imageUriPath)
+                )
+                bitmap = BitmapScalar.stretchToFill(
+                    bitmap,
+                    addOrUpdateBinding.ivAddImage.getWidth(),
+                    addOrUpdateBinding.ivAddImage.getHeight()
+                )
+                addOrUpdateBinding.ivAddImage.setImageBitmap(bitmap)
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        })
     }
 
     // Send Result code on exiting the page

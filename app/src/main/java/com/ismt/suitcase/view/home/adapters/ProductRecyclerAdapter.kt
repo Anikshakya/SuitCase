@@ -13,6 +13,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.ismt.suitcase.R
 import com.ismt.suitcase.room.Product
+import com.ismt.suitcase.utils.BitmapScalar
 import java.io.IOException
 
 class ProductRecyclerAdapter(
@@ -59,23 +60,23 @@ class ProductRecyclerAdapter(
         holder.itemRootLayout.setOnClickListener {
             listener.onItemClicked(products[position], position)
         }
-//        holder.itemImage.post {
-//            var bitmap: Bitmap?
-//            try {
-//                bitmap = MediaStore.Images.Media.getBitmap(
-//                    context.contentResolver,
-//                    Uri.parse(products[position].image)
-//                )
-//                bitmap = BitmapScalar.stretchToFill(
-//                    bitmap,
-//                    holder.itemImage.width,
-//                    holder.itemImage.height
-//                )
-//                holder.itemImage.setImageBitmap(bitmap)
-//            } catch (e: IOException) {
-//                e.printStackTrace()
-//            }
-//        }
+        holder.itemImage.post {
+            var bitmap: Bitmap?
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(
+                    context.contentResolver,
+                    Uri.parse(products[position].image)
+                )
+                bitmap = BitmapScalar.stretchToFill(
+                    bitmap,
+                    holder.itemImage.width,
+                    holder.itemImage.height
+                )
+                holder.itemImage.setImageBitmap(bitmap)
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
     }
 
     interface ProductAdapterListener {
