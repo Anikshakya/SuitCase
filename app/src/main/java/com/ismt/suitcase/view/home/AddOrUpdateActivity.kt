@@ -20,6 +20,9 @@ import com.ismt.suitcase.room.Product
 import com.ismt.suitcase.room.SuitcaseDatabase
 import com.ismt.suitcase.utils.BitmapScalar
 import java.io.IOException
+import java.time.LocalDate
+import java.util.*
+import kotlin.collections.ArrayList
 
 class AddOrUpdateActivity : AppCompatActivity() {
     private lateinit var addOrUpdateBinding : ActivityAddOrUpdateBinding
@@ -79,6 +82,7 @@ class AddOrUpdateActivity : AppCompatActivity() {
             addOrUpdateBinding.tieTitle.setText(this.title)
             addOrUpdateBinding.tiePrice.setText(this.price)
             addOrUpdateBinding.tieDescription.setText(this.description)
+            imageUriPath = this.image.toString()
             addOrUpdateBinding.ivAddImage.post {
                 var bitmap: Bitmap?
                 try {
@@ -117,7 +121,7 @@ class AddOrUpdateActivity : AppCompatActivity() {
         // On Submit Button Behaviour
         addOrUpdateBinding.mbSubmit.setOnClickListener {
             var title = addOrUpdateBinding.tieTitle.text.toString().trim()
-            var price = addOrUpdateBinding.tiePrice.text.toString().trim()
+            var price = "$"+addOrUpdateBinding.tiePrice.text.toString().trim()
             var desc = addOrUpdateBinding.tieDescription.text.toString().trim()
 
             // Validation: Check if fields are not empty
@@ -139,8 +143,13 @@ class AddOrUpdateActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Start Submit Button Loading
-            startLoading()
+            // Get the current date
+            val calendar = Calendar.getInstance()
+            val year = calendar.get(Calendar.YEAR)
+            val month = calendar.get(Calendar.MONTH) + 1 // Month is 0-based, so add 1
+            val day = calendar.get(Calendar.DAY_OF_MONTH)
+            // Create a string representation of the current date
+            val currentDate = "$year-$month-$day"
 
             // Set The Data In Room Database
             val product = Product(
@@ -148,6 +157,7 @@ class AddOrUpdateActivity : AppCompatActivity() {
                 price,
                 desc,
                 imageUriPath,
+                currentDate,
                 ""
             )
 
@@ -167,8 +177,6 @@ class AddOrUpdateActivity : AppCompatActivity() {
                         runOnUiThread {
                             //Clear the Input Fields
                             clearInputFields()
-                            //Stop Submit Button Loading
-                            stopLoading()
                             setResultWithFinish(RESULT_CODE_COMPLETE)
                             ToastUtils.showToast(this, "Product Updated!")
                         }
@@ -178,19 +186,14 @@ class AddOrUpdateActivity : AppCompatActivity() {
                         runOnUiThread {
                             //Clear the Input Fields
                             clearInputFields()
-                            //Stop Submit Button Loading
-                            stopLoading()
                             setResultWithFinish(RESULT_CODE_COMPLETE)
                             ToastUtils.showToast(this, "Product Added!")
                         }
                     }
                 } catch (e : Exception) {
                     e.printStackTrace()
-                    //Stop Submit Button Loading
-                    stopLoading()
-
                     runOnUiThread {
-                        ToastUtils.showToast(this, "Couldn't Add or Update Product!")
+                        ToastUtils.showToast(this, e.toString())
                     }
                 }
             }.start()
@@ -267,7 +270,7 @@ class AddOrUpdateActivity : AppCompatActivity() {
         )
 //        intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-        startGalleryActivityForResult.launch(arrayOf("image/*", "video/*"))
+        startGalleryActivityForResult.launch(arrayOf("image/*"))
     }
 
     // Save the picked image
@@ -308,21 +311,5 @@ class AddOrUpdateActivity : AppCompatActivity() {
         addOrUpdateBinding.tieTitle.text?.clear()
         addOrUpdateBinding.tiePrice.text?.clear()
         addOrUpdateBinding.tieDescription.text?.clear()
-    }
-
-    //Start Loading
-    private fun startLoading(){
-        //Display Loading
-        addOrUpdateBinding.pbSubmitLoading.visibility = View.VISIBLE
-        //Hide Login Button on loading
-        addOrUpdateBinding.mbSubmit.visibility = View.GONE
-    }
-
-    //Stop Loading
-    private fun stopLoading(){
-        //Hide Loading
-        addOrUpdateBinding.pbSubmitLoading.visibility = View.GONE
-        //Display Login Button on loading
-        addOrUpdateBinding.mbSubmit.visibility = View.VISIBLE
     }
 }

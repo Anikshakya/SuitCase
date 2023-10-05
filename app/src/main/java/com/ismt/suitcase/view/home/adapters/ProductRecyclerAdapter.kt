@@ -26,12 +26,16 @@ class ProductRecyclerAdapter(
         var itemRootLayout: ConstraintLayout
         var itemImage: ImageView
         var itemTitle: TextView
+        var itemPrice: TextView
         var itemDescription: TextView
+        var itemDate : TextView
 
         init {
             itemRootLayout = view.findViewById(R.id.item_root_layout)
             itemImage = view.findViewById(R.id.iv_item_image)
             itemTitle = view.findViewById(R.id.tv_item_title)
+            itemPrice = view.findViewById(R.id.tv_item_price)
+            itemDate = view.findViewById(R.id.tv_item_date)
             itemDescription = view.findViewById(R.id.tv_item_description)
         }
     }
@@ -57,6 +61,8 @@ class ProductRecyclerAdapter(
     ) {
         holder.itemTitle.text = products[position].title
         holder.itemDescription.text = products[position].description
+        holder.itemPrice.text = products[position].price
+        holder.itemDate.text = products[position].date
         holder.itemRootLayout.setOnClickListener {
             listener.onItemClicked(products[position], position)
         }

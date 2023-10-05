@@ -15,6 +15,7 @@ data class Product(
     val price: String,
     val description: String,
     val image: String?,
+    val date: String?,
     val location: String?
 ): Parcelable {
     constructor(
@@ -22,6 +23,7 @@ data class Product(
         price: String,
         description: String,
         image: String?,
+        date: String?,
         location: String?
-    ): this(0, title, price, description, image, location)
+    ): this(0, title, price, description, image, date, location)
 }

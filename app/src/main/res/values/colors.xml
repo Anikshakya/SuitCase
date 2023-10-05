@@ -7,5 +7,6 @@
     <color name="grey">#787878</color>
     <color name="lightGrey">#E6E6E6</color>
     <color name="softGrey">#F3F3F3</color>
-    <color name="activityBackground">#faf8ec</color>
+    <color name="activityBackground">#F3F3F3</color>
+<!--    <color name="activityBackground">#faf8ec</color>-->
 </resources>

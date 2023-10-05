@@ -1,60 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item_root_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp"
-    android:layout_margin="10dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="10dp"
+    android:layout_marginBottom="15dp"
     android:background="@drawable/rounded_product_tile">
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/item_guideline1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintGuide_percent="0.3"/>
 
     <ImageView
         android:id="@+id/iv_item_image"
-        android:layout_width="96dp"
-        android:layout_height="87dp"
-        android:layout_marginTop="4dp"
-        android:src="@drawable/ic_home"
-        app:layout_constraintEnd_toEndOf="@+id/item_guideline1"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:layout_width="120dp"
+        android:layout_height="90dp"
+        android:padding="2dp"
+        android:src="@drawable/no_image"
+        android:layout_gravity="center_vertical"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
 
     <TextView
         android:id="@+id/tv_item_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@+id/item_guideline1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Hand Bag"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Sleeping Bag"
+        android:paddingRight="4dp"
         android:textStyle="bold"
-        android:textSize="18sp"
-        android:layout_marginStart="8dp"/>
+        android:textSize="16sp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        app:layout_constraintStart_toEndOf="@+id/iv_item_image"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
 
     <TextView
         android:id="@+id/tv_item_description"
-        android:layout_width="247dp"
-        android:layout_height="61dp"
+        android:layout_width="0dp"
+        android:layout_height="53dp"
+        android:paddingRight="4dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:ellipsize="end"
         android:maxLines="3"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@id/iv_item_image"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/item_guideline1"
+        android:text="A very high-quality sleeping bag for camping/outdoors. Really great material."
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/iv_item_image"
         app:layout_constraintTop_toBottomOf="@+id/tv_item_title"
-        app:layout_constraintVertical_bias="0.0"
-        tools:text="This is the description of the hand bag" />
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/tv_item_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:layout_marginStart="8dp"
+        android:textSize="17sp"
+        android:text="$49.99"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iv_item_image"
+        app:layout_constraintTop_toBottomOf="@+id/tv_item_description"
+        app:layout_constraintVertical_bias="0.6" />
+
+    <TextView
+        android:id="@+id/tv_item_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingRight="4dp"
+        android:text="2030-09-18"
+        android:textColor="@color/grey"
+        android:textSize="10sp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
