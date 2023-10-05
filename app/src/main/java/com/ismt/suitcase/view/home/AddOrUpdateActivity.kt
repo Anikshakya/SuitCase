@@ -60,6 +60,12 @@ class AddOrUpdateActivity : AppCompatActivity() {
         }
     }
 
+    // Start maps activity expecting for result
+    private val startMapActivityForResult = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()) {
+        //TODO Handle data
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //Bindings
@@ -101,6 +107,11 @@ class AddOrUpdateActivity : AppCompatActivity() {
         // On Press of Image
         addOrUpdateBinding.ivAddImage.setOnClickListener {
             handleImageAddButtonClicked()
+        }
+
+        // On Maps Select
+        addOrUpdateBinding.mbLocation.setOnClickListener {
+            startMapActivity()
         }
 
         // On Submit Button Behaviour
@@ -278,6 +289,12 @@ class AddOrUpdateActivity : AppCompatActivity() {
                 e.printStackTrace()
             }
         })
+    }
+
+    // Start Maps Activity
+    private fun startMapActivity() {
+        val intent = Intent(this, MapsActivity::class.java)
+        startMapActivityForResult.launch(intent)
     }
 
     // Send Result code on exiting the page

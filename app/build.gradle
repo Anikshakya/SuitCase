@@ -55,6 +55,12 @@ dependencies {
     implementation "androidx.camera:camera-view:${camerax_version}"
     implementation "androidx.camera:camera-extensions:${camerax_version}"
 
+    //for maps
+    implementation 'com.google.android.gms:play-services-maps:18.1.0'
+
+    //for location
+    implementation 'com.google.android.gms:play-services-location:21.0.1'
+
     //ROOM DATA BASE
     def room_version = "2.5.2"
     implementation "androidx.room:room-runtime:$room_version"
