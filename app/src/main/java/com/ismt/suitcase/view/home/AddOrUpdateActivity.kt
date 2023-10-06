@@ -186,6 +186,7 @@ class AddOrUpdateActivity : AppCompatActivity() {
                         runOnUiThread {
                             //Clear the Input Fields
                             clearInputFields()
+                            setResultWithFinish(RESULT_CODE_COMPLETE, product)
                             ToastUtils.showToast(this, "Product Added!")
                         }
                     }
