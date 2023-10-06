@@ -1,46 +1,152 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".view.home.fragment.ExploreFragment">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="22dp">
 
-    <!-- TODO: Update Home fragment layout -->
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="42dp">
+
+        <ImageView
+            android:id="@+id/iv_item_image"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginEnd="16dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/no_image"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hi Muna"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginTop="4dp"
+            android:textColor="#535353"
+            tools:ignore="HardcodedText" />
+
+        <ImageView
+            android:id="@+id/iv_notification"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginEnd="16dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_home"
+            />
+
+    </LinearLayout>
+
 
     <TextView
-        android:id="@+id/tv_greeting_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/greeting_text"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textSize="24sp"
+        android:text="Where do \nyou want to go?"
+        android:textSize="30sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.096"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_gravity="left"
+        android:layout_marginBottom="14dp"
+        android:textColor="#2B2B2B"
+        tools:ignore="HardcodedText" />
 
+    <EditText
+        android:id="@+id/editTextSearch"
+        android:layout_width = "match_parent"
+        android:layout_height="45dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="28dp"
+        android:background="@drawable/rounded_search"
+        android:hint="Search"
+        android:inputType="text"
+        android:drawableStart="@drawable/ic_search"
+        android:drawablePadding="8dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"/>
+
+    <!-- Category Heading -->
     <TextView
-        android:id="@+id/tv_greeting_text2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="12dp"
-        android:text="@string/greeting_text2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_greeting_text" />
+        android:text="Categories"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_gravity="left"
+        android:layout_marginBottom="16dp"
+        android:textColor="#2B2B2B"
+        tools:ignore="HardcodedText" />
 
+    <!-- Category -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal">
+
+            <include layout="@layout/category_layout1" />
+            <include layout="@layout/category_layout3" />
+            <include layout="@layout/category_layout" />
+            <include layout="@layout/category_layout2" />
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    // Top Trip Heading
     <TextView
-        android:id="@+id/tv_email"
-        android:layout_width="52dp"
-        android:layout_height="28dp"
-        android:layout_marginTop="4dp"
-        android:text="@string/app_name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.044"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_greeting_text2" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Top Trips"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_gravity="left"
+        android:layout_marginBottom="16dp"
+        android:textColor="#2B2B2B"
+        tools:ignore="HardcodedText" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    // Top Trip
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:layout_marginBottom="20dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- Container 1 -->
+            <include layout="@layout/top_trips2" />
+
+            <!-- Container 2 -->
+            <include layout="@layout/top_trips" />
+
+            <!-- Container 3 -->
+            <include layout="@layout/top_trips1" />
+
+            <!-- Container 4 -->
+            <include layout="@layout/top_trips3" />
+
+            <!-- Container 5 -->
+            <include layout="@layout/top_trips4" />
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
+
+</LinearLayout>
+

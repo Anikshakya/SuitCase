@@ -6,7 +6,9 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.ColorStateList
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -215,13 +217,17 @@ class ProductDetailActivity : AppCompatActivity() {
 
     // Display sms bottom sheet
     private fun showSmsBottomSheetDialog() {
-        //TODO
         val smsBottomSheetDialog = BottomSheetDialog(this)
         smsBottomSheetDialog.setContentView(R.layout.bottom_sheet_send_sms)
 
         val tilContact: TextInputLayout? = smsBottomSheetDialog.findViewById(R.id.til_contact)
         val tieContact: TextInputEditText? = smsBottomSheetDialog.findViewById(R.id.tie_contact)
         val sendSmsButton: MaterialButton? = smsBottomSheetDialog.findViewById(R.id.mb_send_sms)
+
+        // Set the background color for the button
+        sendSmsButton?.backgroundTintList = ColorStateList.valueOf(Color.BLACK)
+        // Set the text color for the button
+        sendSmsButton?.setTextColor(Color.WHITE)
 
         tilContact?.setEndIconOnClickListener {
             //TODO open Contact Activity
