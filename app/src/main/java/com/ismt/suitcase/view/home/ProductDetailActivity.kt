@@ -64,11 +64,11 @@ class ProductDetailActivity : AppCompatActivity() {
                         applicationContext.contentResolver,
                         Uri.parse(product.image)
                     )
-                    bitmap = BitmapScalar.stretchToFill(
-                        bitmap,
-                        detailViewBinding.productImage.width,
-                        detailViewBinding.productImage.height
-                    )
+//                    bitmap = BitmapScalar.stretchToFill(
+//                        bitmap,
+//                        detailViewBinding.productImage.width,
+//                        detailViewBinding.productImage.height
+//                    )
                     detailViewBinding.productImage.setImageBitmap(bitmap)
                 } catch (e: IOException) {
                     e.printStackTrace()

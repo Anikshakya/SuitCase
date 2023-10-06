@@ -61,7 +61,7 @@ class ProductRecyclerAdapter(
     ) {
         holder.itemTitle.text = products[position].title
         holder.itemDescription.text = products[position].description
-        holder.itemPrice.text = products[position].price
+        holder.itemPrice.text = "$"+products[position].price
         holder.itemDate.text = products[position].date
         holder.itemRootLayout.setOnClickListener {
             listener.onItemClicked(products[position], position)
@@ -73,11 +73,11 @@ class ProductRecyclerAdapter(
                     context.contentResolver,
                     Uri.parse(products[position].image)
                 )
-                bitmap = BitmapScalar.stretchToFill(
-                    bitmap,
-                    holder.itemImage.width,
-                    holder.itemImage.height
-                )
+//                bitmap = BitmapScalar.stretchToFill(
+//                    bitmap,
+//                    holder.itemImage.width,
+//                    holder.itemImage.height
+//                )
                 holder.itemImage.setImageBitmap(bitmap)
             } catch (e: IOException) {
                 e.printStackTrace()

@@ -90,11 +90,11 @@ class AddOrUpdateActivity : AppCompatActivity() {
                         applicationContext.contentResolver,
                         Uri.parse(this.image)
                     )
-                    bitmap = BitmapScalar.stretchToFill(
-                        bitmap,
-                        addOrUpdateBinding.ivAddImage.width,
-                        addOrUpdateBinding.ivAddImage.height
-                    )
+//                    bitmap = BitmapScalar.scaleToFill(
+//                        bitmap,
+//                        addOrUpdateBinding.ivAddImage.width,
+//                        addOrUpdateBinding.ivAddImage.height
+//                    )
                     addOrUpdateBinding.ivAddImage.setImageBitmap(bitmap)
                 } catch (e: IOException) {
                     e.printStackTrace()
@@ -105,7 +105,7 @@ class AddOrUpdateActivity : AppCompatActivity() {
 
         // On Press of Back Button
         addOrUpdateBinding.ibBack.setOnClickListener {
-            setResultWithFinish(RESULT_CODE_CANCEL)
+            setResultWithFinish(RESULT_CODE_CANCEL, null)
         }
 
         // On Press of Image
@@ -121,7 +121,7 @@ class AddOrUpdateActivity : AppCompatActivity() {
         // On Submit Button Behaviour
         addOrUpdateBinding.mbSubmit.setOnClickListener {
             var title = addOrUpdateBinding.tieTitle.text.toString().trim()
-            var price = "$"+addOrUpdateBinding.tiePrice.text.toString().trim()
+            var price = addOrUpdateBinding.tiePrice.text.toString().trim()
             var desc = addOrUpdateBinding.tieDescription.text.toString().trim()
 
             // Validation: Check if fields are not empty
@@ -177,7 +177,7 @@ class AddOrUpdateActivity : AppCompatActivity() {
                         runOnUiThread {
                             //Clear the Input Fields
                             clearInputFields()
-                            setResultWithFinish(RESULT_CODE_COMPLETE)
+                            setResultWithFinish(RESULT_CODE_COMPLETE, product)
                             ToastUtils.showToast(this, "Product Updated!")
                         }
                     } else {
@@ -186,7 +186,6 @@ class AddOrUpdateActivity : AppCompatActivity() {
                         runOnUiThread {
                             //Clear the Input Fields
                             clearInputFields()
-                            setResultWithFinish(RESULT_CODE_COMPLETE)
                             ToastUtils.showToast(this, "Product Added!")
                         }
                     }
@@ -301,8 +300,10 @@ class AddOrUpdateActivity : AppCompatActivity() {
     }
 
     // Send Result code on exiting the page
-    private fun setResultWithFinish(resultCode: Int) {
-        setResult(resultCode)
+    private fun setResultWithFinish(resultCode: Int, product: Product?) {
+        val intent = Intent()
+        intent.putExtra(AppConstants.KEY_PRODUCT, product)
+        setResult(resultCode, intent)
         finish()
     }
 
