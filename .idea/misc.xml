@@ -5,6 +5,7 @@
       <map>
         <entry key="..\:/Anik/Ismt Assignments/AMD assignment (Anik Shakya)/SuitCase/app/src/main/res/drawable/ic_cancel.xml" value="0.132" />
         <entry key="..\:/Anik/Ismt Assignments/AMD assignment (Anik Shakya)/SuitCase/app/src/main/res/drawable/ic_circle.xml" value="0.132" />
+        <entry key="..\:/Anik/Ismt Assignments/AMD assignment (Anik Shakya)/SuitCase/app/src/main/res/drawable/ic_contact.xml" value="0.132" />
         <entry key="..\:/Anik/Ismt Assignments/AMD assignment (Anik Shakya)/SuitCase/app/src/main/res/drawable/neumorphic_background.xml" value="0.106" />
         <entry key="..\:/Anik/Ismt Assignments/AMD assignment (Anik Shakya)/SuitCase/app/src/main/res/drawable/radius.xml" value="0.132" />
         <entry key="..\:/Anik/Ismt Assignments/AMD assignment (Anik Shakya)/SuitCase/app/src/main/res/drawable/rounded_button.xml" value="0.1315" />
@@ -23,6 +24,7 @@
         <entry key="..\:/Anik/Ismt Assignments/AMD assignment (Anik Shakya)/SuitCase/app/src/main/res/layout/activity_register.xml" value="0.21331521739130435" />
         <entry key="..\:/Anik/Ismt Assignments/AMD assignment (Anik Shakya)/SuitCase/app/src/main/res/layout/activity_splash.xml" value="0.40370370370370373" />
         <entry key="..\:/Anik/Ismt Assignments/AMD assignment (Anik Shakya)/SuitCase/app/src/main/res/layout/bottom_sheet_pick_image.xml" value="0.20199275362318841" />
+        <entry key="..\:/Anik/Ismt Assignments/AMD assignment (Anik Shakya)/SuitCase/app/src/main/res/layout/bottom_sheet_send_sms.xml" value="0.1234375" />
         <entry key="..\:/Anik/Ismt Assignments/AMD assignment (Anik Shakya)/SuitCase/app/src/main/res/layout/fragment_explore.xml" value="0.21331521739130435" />
         <entry key="..\:/Anik/Ismt Assignments/AMD assignment (Anik Shakya)/SuitCase/app/src/main/res/layout/fragment_home.xml" value="0.21331521739130435" />
         <entry key="..\:/Anik/Ismt Assignments/AMD assignment (Anik Shakya)/SuitCase/app/src/main/res/layout/fragment_plan.xml" value="0.1" />
