@@ -9,15 +9,16 @@
 <!-- Profile Image -->
 
 <!-- User Information -->
-    <ImageView
-        android:id="@+id/profile_image"
+    <com.google.android.material.imageview.ShapeableImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/iv_item_image"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="50dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginTop="60dp"
+        android:adjustViewBounds="true"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_home" />
+        android:src="@drawable/bali"
+        app:shapeAppearanceOverlay="@style/circularImageView" />
 
     <TextView
         android:id="@+id/user_name"

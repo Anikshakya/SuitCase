@@ -3,4 +3,9 @@
     <style name="AppTheme" parent="@style/Theme.SuitCase">
         <item name="android:fontFamily">@font/ralewayregular</item>
     </style>
+
+    <style name="circularImageView">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
 </resources>

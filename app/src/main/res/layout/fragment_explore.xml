@@ -1,6 +1,11 @@
+
+<ScrollView
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent">
+
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -12,23 +17,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="40dp"
-        android:layout_marginBottom="42dp">
+        android:layout_marginBottom="20dp">
 
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/iv_item_image"
+            android:layout_marginEnd="16dp"
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:layout_marginEnd="16dp"
+            android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            android:src="@drawable/no_image"
-            />
+            android:src="@drawable/bali"
+            app:shapeAppearanceOverlay="@style/circularImageView" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="Hi Muna"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textStyle="bold"
             android:layout_marginTop="4dp"
             android:textColor="#535353"
@@ -36,12 +42,12 @@
 
         <ImageView
             android:id="@+id/iv_notification"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginEnd="16dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_home"
-            />
+            android:src="@drawable/ic_notification"
+            android:layout_gravity="end"
+        />
 
     </LinearLayout>
 
@@ -50,7 +56,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Where do \nyou want to go?"
-        android:textSize="30sp"
+        android:textSize="28sp"
         android:textStyle="bold"
         android:layout_gravity="left"
         android:layout_marginBottom="14dp"
@@ -60,8 +66,7 @@
     <EditText
         android:id="@+id/editTextSearch"
         android:layout_width = "match_parent"
-        android:layout_height="45dp"
-        android:layout_marginTop="16dp"
+        android:layout_height="42dp"
         android:layout_marginBottom="28dp"
         android:background="@drawable/rounded_search"
         android:hint="Search"
@@ -73,11 +78,11 @@
         android:paddingTop="8dp"
         android:paddingBottom="8dp"/>
 
-    <!-- Category Heading -->
+    <!-- Explore Heading -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Categories"
+        android:text="Explore Places"
         android:textSize="20sp"
         android:textStyle="bold"
         android:layout_gravity="left"
@@ -85,7 +90,7 @@
         android:textColor="#2B2B2B"
         tools:ignore="HardcodedText" />
 
-    <!-- Category -->
+    <!-- Explore Places -->
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -97,25 +102,13 @@
             android:layout_marginBottom="20dp"
             android:orientation="horizontal">
 
-            <include layout="@layout/category_layout1" />
-            <include layout="@layout/category_layout3" />
             <include layout="@layout/category_layout" />
+            <include layout="@layout/category_layout1" />
             <include layout="@layout/category_layout2" />
+            <include layout="@layout/category_layout3" />
 
         </LinearLayout>
     </HorizontalScrollView>
-
-    // Top Trip Heading
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Top Trips"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_gravity="left"
-        android:layout_marginBottom="16dp"
-        android:textColor="#2B2B2B"
-        tools:ignore="HardcodedText" />
 
     // Top Trip
     <HorizontalScrollView
@@ -147,6 +140,40 @@
         </LinearLayout>
     </HorizontalScrollView>
 
+    // Book Now
+    <!-- Book Now Heading -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Book Now"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_gravity="left"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="2dp"
+        android:textColor="#2B2B2B"
+        tools:ignore="HardcodedText" />
+
+    <!-- Book Bow Places -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal">
+
+            <include layout="@layout/book_now" />
+            <include layout="@layout/book_now1" />
+            <include layout="@layout/book_now2" />
+            <include layout="@layout/book_now3" />
+
+        </LinearLayout>
+    </HorizontalScrollView>
 
 </LinearLayout>
+</ScrollView>
 

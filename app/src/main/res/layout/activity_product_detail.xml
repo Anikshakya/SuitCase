@@ -74,7 +74,7 @@
                 android:id="@+id/product_image"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
-                android:background="@android:color/holo_blue_light"
+                android:background="@drawable/no_image"
                 android:scaleType="centerCrop"
                 tools:src="@drawable/no_image"/>
 
