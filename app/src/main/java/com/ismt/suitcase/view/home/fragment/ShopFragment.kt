@@ -77,7 +77,6 @@ class ShopFragment : Fragment(), ProductRecyclerAdapter.ProductAdapterListener {
     }
 
     private fun setUpRecyclerView() {
-        //TODO fetch data from source (remote server)
         val suitCaseDatabase = SuitcaseDatabase.getInstance(requireActivity().applicationContext)
         val productDao = suitCaseDatabase.productDao()
 
@@ -129,6 +128,22 @@ class ShopFragment : Fragment(), ProductRecyclerAdapter.ProductAdapterListener {
             val intent = Intent(requireActivity(), AddOrUpdateActivity::class.java)
             startAddOrUpdateActivityForResult.launch(intent)
         }
+    }
+
+    // In case item list is empty
+    private fun emptyView(){
+        //Hide Login Button on loading
+        shopBinding.rvShop.visibility = View.GONE
+        //Display Loading
+        shopBinding.linearLayoutEmpty.visibility = View.VISIBLE
+    }
+
+    // In case item list is not empty
+    private fun notEmptyView(){
+        //Hide Loading
+        shopBinding.linearLayoutEmpty.visibility = View.GONE
+        //Display Login Button on loading
+        shopBinding.rvShop.visibility = View.VISIBLE
     }
 
     override fun onItemClicked(product: Product, position: Int) {

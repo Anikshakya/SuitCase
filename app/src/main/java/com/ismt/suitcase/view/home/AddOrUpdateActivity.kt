@@ -196,10 +196,14 @@ class AddOrUpdateActivity : AppCompatActivity() {
         }
 
         try {
-            val lat = productLocation.split(",")[0]
-            val lng = productLocation.split(",")[1]
-            val geoCodedAddress = GeoCoding.reverseTheGeoCodeToAddress(this, lat, lng)
-            addOrUpdateBinding.mbLocation.text = geoCodedAddress
+            if(productLocation != ""){
+                val lat = productLocation!!.split(",")[0]
+                val lng = productLocation!!.split(",")[1]
+                val geoCodedAddress = GeoCoding.reverseTheGeoCodeToAddress(this, lat, lng)
+                addOrUpdateBinding.mbLocation.text = geoCodedAddress
+            } else {
+                addOrUpdateBinding.mbLocation.text = ""
+            }
         } catch (exception: Exception) {
             exception.printStackTrace()
         }

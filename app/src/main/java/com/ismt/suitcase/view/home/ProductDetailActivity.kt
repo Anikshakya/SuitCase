@@ -3,7 +3,6 @@ package com.ismt.suitcase.view.home
 import android.Manifest
 import android.content.ActivityNotFoundException
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
@@ -11,11 +10,14 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.provider.MediaStore
 import android.telephony.SmsManager
+import android.util.Log
 import android.view.KeyEvent
-import android.widget.LinearLayout
+import android.widget.Button
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -29,7 +31,6 @@ import com.ismt.suitcase.constants.AppConstants
 import com.ismt.suitcase.databinding.ActivityProductDetailBinding
 import com.ismt.suitcase.room.Product
 import com.ismt.suitcase.room.SuitcaseDatabase
-import com.ismt.suitcase.utils.BitmapScalar
 import com.ismt.suitcase.utils.GeoCoding
 import java.io.IOException
 
@@ -37,15 +38,10 @@ class ProductDetailActivity : AppCompatActivity() {
     private lateinit var detailViewBinding: ActivityProductDetailBinding
     private var product: Product? = null
     private var position: Int = -1
+    private var pickedContact: TextInputEditText? = null
 
-    private val startAddItemActivity = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) {
-        if (it.resultCode == AddOrUpdateActivity.RESULT_CODE_COMPLETE) {
-            val product = it.data?.getParcelableExtra<Product>(AppConstants.KEY_PRODUCT)
-            populateDataToTheViews(product)
-        }
-    }
+    private lateinit var startAddItemActivity: ActivityResultLauncher<Intent>
+    private lateinit var startContactActivityForResult: ActivityResultLauncher<Intent>
 
     companion object {
         const val RESULT_CODE_REFRESH = 2001
@@ -56,6 +52,8 @@ class ProductDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         detailViewBinding = ActivityProductDetailBinding.inflate(layoutInflater)
         setContentView(detailViewBinding.root)
+        bindAddOrUpdateActivityForResult()
+        bindContactPickerActivityForResult()
 
         // Receiving Intent Data
         product = intent.getParcelableExtra(AppConstants.KEY_PRODUCT)
@@ -202,15 +200,14 @@ class ProductDetailActivity : AppCompatActivity() {
     // Set up the sms button
     private fun setUpShareButton() {
         detailViewBinding.ibShare.setOnClickListener {
-            showSmsBottomSheetDialog()
-//            if (areSmsPermissionsGranted(this)) {
-//                showSmsBottomSheetDialog()
-//            } else {
-//                requestPermissions(
-//                    smsPermissionsList()!!.toTypedArray(),
-//                    SMS_PERMISSIONS_REQUEST_CODE
-//                )
-//            }
+            if (areSmsPermissionsGranted(this)) {
+                showSmsBottomSheetDialog()
+            } else {
+                requestPermissions(
+                    smsPermissionsList()!!.toTypedArray(),
+                    SMS_PERMISSIONS_REQUEST_CODE
+                )
+            }
         }
     }
 
@@ -235,25 +232,37 @@ class ProductDetailActivity : AppCompatActivity() {
 
         val tilContact: TextInputLayout? = smsBottomSheetDialog.findViewById(R.id.til_contact)
         val tieContact: TextInputEditText? = smsBottomSheetDialog.findViewById(R.id.tie_contact)
+        val btnContact: Button? = smsBottomSheetDialog.findViewById(R.id.btn_contact)
         val sendSmsButton: MaterialButton? = smsBottomSheetDialog.findViewById(R.id.mb_send_sms)
 
         // Set the background color for the button
         sendSmsButton?.backgroundTintList = ColorStateList.valueOf(Color.BLACK)
         // Set the text color for the button
         sendSmsButton?.setTextColor(Color.WHITE)
+        // Set the background color for the button
+        btnContact?.backgroundTintList = ColorStateList.valueOf(Color.BLACK)
+        // Set the text color for the button
+        btnContact?.setTextColor(Color.WHITE)
 
-        tilContact?.setEndIconOnClickListener {
-            //TODO open Contact Activity
+        btnContact?.setOnClickListener {
+            val pickContact = Intent(Intent.ACTION_PICK)
+            pickContact.setDataAndType(
+                ContactsContract.Contacts.CONTENT_URI,
+                ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE
+            )
+            startContactActivityForResult.launch(pickContact)
         }
 
         sendSmsButton?.setOnClickListener {
-            val contact = tieContact?.text.toString()
-            //TODO validation
-            if (contact.isBlank()) {
-                tilContact?.error = "Enter Contact"
-            } else {
-                sendSms(contact)
+            if(pickedContact?.text.toString().isNotEmpty() && pickedContact?.text.toString() != "null"){
+                tieContact?.setText(pickedContact?.text.toString())
             }
+
+            if(tieContact?.text.toString().isEmpty() || tieContact == null){
+                tilContact?.error = "Phone Number is required"
+                return@setOnClickListener
+            }
+            sendSms(tieContact?.text.toString())
         }
 
         smsBottomSheetDialog.show()
@@ -284,7 +293,7 @@ class ProductDetailActivity : AppCompatActivity() {
         openSmsAppToSendMessage(contact, message)
     }
 
-
+    // Open  message app
     private fun openSmsAppToSendMessage(contact: String, message: String) {
         val smsUri = Uri.parse("smsto:$contact")
         val intent = Intent(Intent.ACTION_SENDTO, smsUri)
@@ -297,6 +306,82 @@ class ProductDetailActivity : AppCompatActivity() {
             Toast.makeText(this, "No SMS app found", Toast.LENGTH_SHORT).show()
         }
     }
+
+    // Fetch the contact
+    private fun fetchContactNumberFromData(data: Intent) {
+        val contactUri = data.data
+
+        if (contactUri == null) {
+            // Handle the case where the contactUri is null
+            Log.e("ContactPicker", "Contact URI is null")
+            return
+        }
+
+        val queryFields = arrayOf(
+            ContactsContract.CommonDataKinds.Phone.NUMBER
+        )
+
+        val cursor = contentResolver.query(
+            contactUri,
+            queryFields,
+            null,
+            null,
+            null
+        )
+
+        cursor?.use { cursor ->
+            if (cursor.moveToFirst()) {
+                val contactNumberIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
+                val contactNumber = cursor.getString(contactNumberIndex)?.replace(Regex("[()\\-\\s]+"), "")
+
+                if (contactNumber != null) {
+                    pickedContact?.setText(contactNumber)
+                } else {
+                    // Handle the case where the contact number is null
+                    Log.e("ContactPicker", "Contact number is null")
+                }
+            } else {
+                // Handle the case where the cursor is empty
+                Log.e("ContactPicker", "Cursor is empty")
+            }
+        }
+    }
+
+
+    // Bind AddUpdate page
+    private fun bindAddOrUpdateActivityForResult() {
+        startAddItemActivity = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) {
+            if (it.resultCode == AddOrUpdateActivity.RESULT_CODE_COMPLETE) {
+                val product = it.data?.getParcelableExtra<Product>(AppConstants.KEY_PRODUCT)
+                populateDataToTheViews(product)
+            } else {
+                // TODO do nothing
+            }
+        }
+    }
+
+    private fun bindContactPickerActivityForResult() {
+        startContactActivityForResult = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == RESULT_OK) {
+                val data = result.data
+                if (data != null) {
+                    fetchContactNumberFromData(data)
+                } else {
+                    // Handle the case where the data is null
+                    // This may occur if the user cancels the contact picker
+                    // You can provide an appropriate message or behavior here
+                }
+            } else {
+                // Handle the case where the user didn't select a contact
+                // You can provide an appropriate message or behavior here
+            }
+        }
+    }
+
 
     // Set the result with finish
     private fun setResultWithFinish(resultCode: Int) {

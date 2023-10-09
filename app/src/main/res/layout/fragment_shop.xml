@@ -23,7 +23,8 @@
             android:id="@+id/tv_shop_heading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/shop_heading"
+            android:text="SuitCase"
+            android:textStyle="bold"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textSize="24sp"/>
 
@@ -31,7 +32,7 @@
             android:id="@+id/tv_shop_heading2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/shop_heading"
+            android:text="List of your items."
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textSize="14sp"/>
 
@@ -68,6 +69,45 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linear_layout"
         app:layout_constraintVertical_bias="0.0" />
+
+    // No item View
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/linear_layout_empty"
+        android:layout_gravity="center"
+        android:layout_width="0dp"
+        android:padding="20dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linear_layout"
+        app:layout_constraintVertical_bias="0.0" >
+
+        <TextView
+            android:layout_marginTop="160dp"
+            android:layout_marginBottom="16dp"
+            android:id="@+id/tv_nothing"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Empty!!"
+            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textSize="24sp"/>
+
+        <TextView
+            android:id="@+id/tv_nothing_text"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="You have not added any items."
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textSize="14sp"/>
+
+    </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add_item"
