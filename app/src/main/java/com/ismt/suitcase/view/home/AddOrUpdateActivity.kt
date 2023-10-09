@@ -59,6 +59,18 @@ class AddOrUpdateActivity : AppCompatActivity() {
             addOrUpdateBinding.tieTitle.setText(this.title)
             addOrUpdateBinding.tiePrice.setText(this.price)
             addOrUpdateBinding.tieDescription.setText(this.description)
+
+            // For location
+            var productLocation = this.location;
+            if(productLocation != ""){
+                val lat = productLocation!!.split(",")[0]
+                val lng = productLocation!!.split(",")[1]
+                val geoCodedAddress = GeoCoding.reverseTheGeoCodeToAddress(applicationContext, lat, lng)
+                addOrUpdateBinding.mbLocation.text = geoCodedAddress
+            } else {
+                addOrUpdateBinding.mbLocation.text = "No Location Found"
+            }
+
             imageUriPath = this.image.toString()
             addOrUpdateBinding.ivAddImage.post {
                 var bitmap: Bitmap?
@@ -135,7 +147,7 @@ class AddOrUpdateActivity : AppCompatActivity() {
                 desc,
                 imageUriPath,
                 currentDate,
-                ""
+                productLocation
             )
 
             // Set the id of the stored product in case of update

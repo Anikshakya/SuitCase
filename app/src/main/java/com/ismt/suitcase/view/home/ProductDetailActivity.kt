@@ -30,6 +30,7 @@ import com.ismt.suitcase.databinding.ActivityProductDetailBinding
 import com.ismt.suitcase.room.Product
 import com.ismt.suitcase.room.SuitcaseDatabase
 import com.ismt.suitcase.utils.BitmapScalar
+import com.ismt.suitcase.utils.GeoCoding
 import java.io.IOException
 
 class ProductDetailActivity : AppCompatActivity() {
@@ -95,6 +96,18 @@ class ProductDetailActivity : AppCompatActivity() {
             detailViewBinding.productTitle.text = this.title
             detailViewBinding.productPrice.text = this.price
             detailViewBinding.productDescription.text = this.description
+
+            // For location
+            var productLocation = this.location;
+            if(productLocation != ""){
+                val lat = productLocation!!.split(",")[0]
+                val lng = productLocation!!.split(",")[1]
+                val geoCodedAddress = GeoCoding.reverseTheGeoCodeToAddress(applicationContext, lat, lng)
+                detailViewBinding.productLocation.text = geoCodedAddress
+            } else {
+                detailViewBinding.productLocation.text = "No Location Found"
+            }
+
             detailViewBinding.productImage.post {
                 var bitmap: Bitmap?
                 try {
