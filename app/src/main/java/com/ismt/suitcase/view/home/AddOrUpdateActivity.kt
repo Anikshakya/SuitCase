@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
 import android.widget.LinearLayout
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -19,6 +20,7 @@ import com.ismt.suitcase.databinding.ActivityAddOrUpdateBinding
 import com.ismt.suitcase.room.Product
 import com.ismt.suitcase.room.SuitcaseDatabase
 import com.ismt.suitcase.utils.BitmapScalar
+import com.ismt.suitcase.utils.GeoCoding
 import java.io.IOException
 import java.time.LocalDate
 import java.util.*
@@ -29,6 +31,7 @@ class AddOrUpdateActivity : AppCompatActivity() {
     private var receivedProduct: Product? = null
     private var isForUpdate = false
     private var imageUriPath = ""
+    private var productLocation = ""
 
     companion object{
         const val RESULT_CODE_COMPLETE = 1001
@@ -36,44 +39,18 @@ class AddOrUpdateActivity : AppCompatActivity() {
         const val GALLERY_PERMISSION_REQUEST_CODE = 11
     }
 
-    private val startCustomCameraActivityForResult = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()) {
-        if (it.resultCode == CustomCameraActivity.CAMERA_ACTIVITY_SUCCESS_RESULT_CODE) {
-            imageUriPath = it.data?.getStringExtra(CustomCameraActivity.CAMERA_ACTIVITY_OUTPUT_FILE_PATH)!!
-            loadThumbnailImage()
-        } else {
-            imageUriPath = ""
-            addOrUpdateBinding.ivAddImage.setImageResource(android.R.drawable.ic_menu_gallery)
-        }
-    }
-
-    // Start gallery activity expecting for result
-    private val startGalleryActivityForResult = registerForActivityResult(
-        ActivityResultContracts.OpenDocument()) {
-        if (it != null) {
-            imageUriPath = it.toString()
-            contentResolver.takePersistableUriPermission(
-                Uri.parse(imageUriPath),
-                Intent.FLAG_GRANT_READ_URI_PERMISSION
-            )
-            loadThumbnailImage()
-        } else {
-            imageUriPath = "";
-            addOrUpdateBinding.ivAddImage.setImageResource(android.R.drawable.ic_menu_gallery);
-        }
-    }
-
-    // Start maps activity expecting for result
-    private val startMapActivityForResult = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()) {
-        //TODO Handle data
-    }
+    private lateinit var startCustomCameraActivityForResult: ActivityResultLauncher<Intent>
+    private lateinit var startGalleryActivityForResult: ActivityResultLauncher<Array<String>>
+    private lateinit var startMapActivityForResult: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //Bindings
         addOrUpdateBinding = ActivityAddOrUpdateBinding.inflate(layoutInflater)
         setContentView(addOrUpdateBinding.root)
+        bindCustomCameraActivityForResult()
+        bindGalleryActivityForResult()
+        bindMapsActivityForResult()
 
         // Received data
         receivedProduct = intent.getParcelableExtra<Product>(AppConstants.KEY_PRODUCT)
@@ -201,13 +178,74 @@ class AddOrUpdateActivity : AppCompatActivity() {
         }
     }
 
+    private fun onLocationDataFetched() {
+        if (productLocation.isBlank()) {
+            return
+        }
+
+        try {
+            val lat = productLocation.split(",")[0]
+            val lng = productLocation.split(",")[1]
+            val geoCodedAddress = GeoCoding.reverseTheGeoCodeToAddress(this, lat, lng)
+            addOrUpdateBinding.mbLocation.text = geoCodedAddress
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+        }
+
+        productLocation.isNotBlank().apply {
+
+        }
+    }
+
+    private fun bindCustomCameraActivityForResult() {
+        startCustomCameraActivityForResult = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == CustomCameraActivity.CAMERA_ACTIVITY_SUCCESS_RESULT_CODE) {
+                imageUriPath = it.data?.getStringExtra(CustomCameraActivity.CAMERA_ACTIVITY_OUTPUT_FILE_PATH)!!
+                loadThumbnailImage(imageUriPath)
+            } else {
+                imageUriPath = "";
+                addOrUpdateBinding.ivAddImage.setImageResource(android.R.drawable.ic_menu_gallery)
+            }
+        }
+    }
+
+    private fun bindGalleryActivityForResult() {
+        startGalleryActivityForResult = registerForActivityResult(
+            ActivityResultContracts.OpenDocument()) {
+            if (it != null) {
+                imageUriPath = it.toString()
+                contentResolver.takePersistableUriPermission(
+                    Uri.parse(imageUriPath),
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION
+                )
+                loadThumbnailImage(imageUriPath)
+            } else {
+                imageUriPath = "";
+                addOrUpdateBinding.ivAddImage.setImageResource(android.R.drawable.ic_menu_gallery)
+            }
+        }
+    }
+
+    private fun bindMapsActivityForResult() {
+        startMapActivityForResult = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == MapsActivity.MAPS_ACTIVITY_SUCCESS_RESULT_CODE) {
+                productLocation = it.data?.getStringExtra(AppConstants.KEY_PRODUCT_LOCATION).toString()
+                onLocationDataFetched()
+            }
+        }
+    }
+
     // Handel the Pick Image
     private fun handleImageAddButtonClicked() {
         val pickImageBottomSheetDialog = BottomSheetDialog(this)
         pickImageBottomSheetDialog.setContentView(R.layout.bottom_sheet_pick_image)
 
-        val linearLayoutPickByCamera: LinearLayout = pickImageBottomSheetDialog.findViewById(R.id.ll_pick_by_camera)!!
-        val linearLayoutPickByGallery: LinearLayout = pickImageBottomSheetDialog.findViewById(R.id.ll_pick_by_gallery)!!
+        val linearLayoutPickByCamera: LinearLayout = pickImageBottomSheetDialog
+            .findViewById(R.id.ll_pick_by_camera)!!
+        val linearLayoutPickByGallery: LinearLayout = pickImageBottomSheetDialog
+            .findViewById(R.id.ll_pick_by_gallery)!!
 
         linearLayoutPickByCamera.setOnClickListener {
             pickImageBottomSheetDialog.dismiss()
@@ -262,7 +300,6 @@ class AddOrUpdateActivity : AppCompatActivity() {
         }
     }
 
-
     private fun startActivityForResultFromGalleryToPickImage() {
         val intent = Intent(
             Intent.ACTION_OPEN_DOCUMENT,
@@ -274,7 +311,7 @@ class AddOrUpdateActivity : AppCompatActivity() {
     }
 
     // Save the picked image
-    private fun loadThumbnailImage() {
+    private fun loadThumbnailImage(imageUriPath: String) {
         addOrUpdateBinding.ivAddImage.post(Runnable {
             var bitmap: Bitmap?
             try {
@@ -284,8 +321,8 @@ class AddOrUpdateActivity : AppCompatActivity() {
                 )
                 bitmap = BitmapScalar.stretchToFill(
                     bitmap,
-                    addOrUpdateBinding.ivAddImage.getWidth(),
-                    addOrUpdateBinding.ivAddImage.getHeight()
+                    addOrUpdateBinding.ivAddImage.width,
+                    addOrUpdateBinding.ivAddImage.height
                 )
                 addOrUpdateBinding.ivAddImage.setImageBitmap(bitmap)
             } catch (e: IOException) {
@@ -298,6 +335,26 @@ class AddOrUpdateActivity : AppCompatActivity() {
     private fun startMapActivity() {
         val intent = Intent(this, MapsActivity::class.java)
         startMapActivityForResult.launch(intent)
+    }
+
+    // Fetch The location data
+    private fun onLocationDataFetch() {
+        if (productLocation.isBlank()) {
+            return
+        }
+
+        try {
+            val lat = productLocation.split(",")[0]
+            val lng = productLocation.split(",")[1]
+            val geoCodedAddress = GeoCoding.reverseTheGeoCodeToAddress(this, lat, lng)
+            addOrUpdateBinding.mbLocation.text = geoCodedAddress
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+        }
+
+        productLocation.isNotBlank().apply {
+
+        }
     }
 
     // Send Result code on exiting the page

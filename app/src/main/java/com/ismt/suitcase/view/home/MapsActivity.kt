@@ -23,6 +23,7 @@ import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.gms.tasks.OnTokenCanceledListener
 import com.ismt.suitcase.R
+import com.ismt.suitcase.constants.AppConstants
 import com.ismt.suitcase.databinding.ActivityMapsBinding
 
 class MapsActivity : AppCompatActivity(),
@@ -31,16 +32,14 @@ class MapsActivity : AppCompatActivity(),
     GoogleMap.OnMyLocationButtonClickListener,
     GoogleMap.OnMarkerDragListener
 {
+
     private lateinit var mapsBinding: ActivityMapsBinding
     private var marker: Marker? = null
     private lateinit var googleMap: GoogleMap
     private val fusedLocationProviderClient: FusedLocationProviderClient? = null
-
     companion object {
         const val MAPS_ACTIVITY_SUCCESS_RESULT_CODE = 3014
         const val MAPS_ACTIVITY_FAILURE_RESULT_CODE = 3015
-        const val EXTRA_PRODUCT_LOCATION = "maps_product_location"
-        const val EXTRA_MAPS_MESSAGE = "maps_exception_message"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,6 +50,34 @@ class MapsActivity : AppCompatActivity(),
         val supportMapFragment = supportFragmentManager
             .findFragmentById(R.id.map_fragment) as SupportMapFragment
         supportMapFragment.getMapAsync(this)
+
+        mapsBinding.ibBack.setOnClickListener {
+            setResultWithFinishOnFailure(MAPS_ACTIVITY_FAILURE_RESULT_CODE)
+        }
+
+        mapsBinding.mbSaveLocation.setOnClickListener {
+            if (marker == null) {
+                ToastUtils.showToast(
+                    this,
+                    "Please add a location marker first. Long press on the map to set it"
+                )
+            } else {
+                setResultWithFinishOnSuccess(MAPS_ACTIVITY_SUCCESS_RESULT_CODE)
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 101 && allPermissionForLocationGranted()) {
+            enableMyLocation()
+        } else {
+            ToastUtils.showToast(this, "Please provide permission for SMS")
+        }
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -58,7 +85,14 @@ class MapsActivity : AppCompatActivity(),
         this.googleMap.setOnMyLocationClickListener(this)
         this.googleMap.setOnMyLocationButtonClickListener(this)
         this.googleMap.setOnMarkerDragListener(this)
+        this.googleMap.setOnMapLongClickListener {
+            marker?.remove()
+            marker = this.googleMap.addMarker(
+                MarkerOptions().position(it).draggable(true)
+            )
+        }
         enableMyLocation()
+        locateMapToDefaultLocation()
     }
 
     override fun onMyLocationClick(location: Location) {
@@ -86,22 +120,20 @@ class MapsActivity : AppCompatActivity(),
 
     private fun locateMarkerToCurrentLocation(currentLocation: Location) {
         val currentLatLng = LatLng(currentLocation.latitude, currentLocation.longitude)
+        marker?.apply {
+            remove()
+        }
         marker = googleMap.addMarker(
             MarkerOptions()
                 .position(currentLatLng)
+                .title("You are here")
                 .draggable(true)
         )
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f))
     }
 
-    private fun locateMarkerToDefaultLocation() {
+    private fun locateMapToDefaultLocation() {
         val kathmandu = LatLng(27.7172, 85.3240)
-        marker = googleMap.addMarker(
-            MarkerOptions()
-                .position(kathmandu)
-                .title("Marker in Kathmandu")
-                .draggable(true)
-        )
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(kathmandu, 15f))
     }
 
@@ -109,7 +141,7 @@ class MapsActivity : AppCompatActivity(),
     private fun enableMyLocation() {
         if (allPermissionForLocationGranted()) {
             fusedLocationProviderClient?.getCurrentLocation(
-                LocationRequest.QUALITY_HIGH_ACCURACY,
+                LocationRequest.QUALITY_BALANCED_POWER_ACCURACY,
                 object : CancellationToken() {
                     override fun onCanceledRequested(onTokenCanceledListener: OnTokenCanceledListener): CancellationToken {
                         return this
@@ -126,16 +158,17 @@ class MapsActivity : AppCompatActivity(),
             })?.addOnFailureListener(
                 OnFailureListener { e ->
                     e.printStackTrace()
-                    locateMarkerToDefaultLocation()
+                    locateMapToDefaultLocation()
                 })
             googleMap.isMyLocationEnabled = true
             return
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestPermissions(
-                getPermissionsRequiredForLocation().toTypedArray(),
-                101
-            )
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(
+                    getPermissionsRequiredForLocation().toTypedArray(),
+                    101
+                )
+            }
         }
     }
 
@@ -158,11 +191,17 @@ class MapsActivity : AppCompatActivity(),
         return permissions
     }
 
-    private fun setResultWithFinish(resultCode: Int) {
+    private fun setResultWithFinishOnSuccess(resultCode: Int) {
         val intent = Intent()
         val latitude = (marker?.position?.latitude).toString()
         val longitude = (marker?.position?.longitude).toString()
-        intent.putExtra("location", latitude.plus(longitude))
+        intent.putExtra(AppConstants.KEY_PRODUCT_LOCATION, latitude.plus(",").plus(longitude))
+        setResult(resultCode, intent)
+        finish()
+    }
+
+    private fun setResultWithFinishOnFailure(resultCode: Int) {
+        setResult(resultCode)
         finish()
     }
 }
