@@ -92,7 +92,7 @@ class ProductDetailActivity : AppCompatActivity() {
     private fun populateDataToTheViews(product: Product?) {
         product?.apply {
             detailViewBinding.productTitle.text = this.title
-            detailViewBinding.productPrice.text = this.price
+            detailViewBinding.productPrice.text = "$"+this.price
             detailViewBinding.productDescription.text = this.description
 
             // For location

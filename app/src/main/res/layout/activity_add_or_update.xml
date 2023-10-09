@@ -10,10 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="30dp"
+        android:layout_margin = "30dp"
         android:orientation="vertical">
 
         <!-- Get back button -->
@@ -42,14 +39,19 @@
             android:layout_marginTop="8dp"
             android:text="Add or Update Your Item." />
 
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/iv_add_image"
-            android:layout_width="240dp"
-            android:layout_height="220dp"
+            android:layout_width="220dp"
+            android:layout_height="200dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/no_image"
+            android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            app:srcCompat="@drawable/no_image" />
+            app:shapeAppearanceOverlay="@style/curvedImageView" />
 
         <!-- Title -->
         <com.google.android.material.textfield.TextInputLayout
