@@ -231,7 +231,7 @@ class ProductDetailActivity : AppCompatActivity() {
         smsBottomSheetDialog.setContentView(R.layout.bottom_sheet_send_sms)
 
         val tilContact: TextInputLayout? = smsBottomSheetDialog.findViewById(R.id.til_contact)
-        val tieContact: TextInputEditText? = smsBottomSheetDialog.findViewById(R.id.tie_contact)
+        pickedContact = smsBottomSheetDialog.findViewById(R.id.tie_contact)
         val btnContact: Button? = smsBottomSheetDialog.findViewById(R.id.btn_contact)
         val sendSmsButton: MaterialButton? = smsBottomSheetDialog.findViewById(R.id.mb_send_sms)
 
@@ -254,15 +254,15 @@ class ProductDetailActivity : AppCompatActivity() {
         }
 
         sendSmsButton?.setOnClickListener {
-            if(pickedContact?.text.toString().isNotEmpty() && pickedContact?.text.toString() != "null"){
-                tieContact?.setText(pickedContact?.text.toString())
+            val contact = pickedContact?.text.toString()
+            //TODO validation
+            if (contact.isBlank()) {
+                tilContact?.error = "Enter Contact"
+            } else {
+                sendSms(contact)
+                smsBottomSheetDialog.dismiss()
             }
-
-            if(tieContact?.text.toString().isEmpty() || tieContact == null){
-                tilContact?.error = "Phone Number is required"
-                return@setOnClickListener
-            }
-            sendSms(tieContact?.text.toString())
+            sendSms(contact)
         }
 
         smsBottomSheetDialog.show()
@@ -311,40 +311,38 @@ class ProductDetailActivity : AppCompatActivity() {
     private fun fetchContactNumberFromData(data: Intent) {
         val contactUri = data.data
 
-        if (contactUri == null) {
-            // Handle the case where the contactUri is null
-            Log.e("ContactPicker", "Contact URI is null")
-            return
-        }
-
+        // Specify which fields you want
+        // your query to return values for
         val queryFields = arrayOf(
             ContactsContract.CommonDataKinds.Phone.NUMBER
         )
+        this.contentResolver
+            .query(
+                contactUri!!,
+                null,
+                null,
+                null,
+                null
+            ).use { cursor ->
+                // Double-check that you
+                // actually got results
+                if (cursor!!.count == 0) return
 
-        val cursor = contentResolver.query(
-            contactUri,
-            queryFields,
-            null,
-            null,
-            null
-        )
-
-        cursor?.use { cursor ->
-            if (cursor.moveToFirst()) {
-                val contactNumberIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
-                val contactNumber = cursor.getString(contactNumberIndex)?.replace(Regex("[()\\-\\s]+"), "")
-
-                if (contactNumber != null) {
-                    pickedContact?.setText(contactNumber)
-                } else {
-                    // Handle the case where the contact number is null
-                    Log.e("ContactPicker", "Contact number is null")
+                // Pull out the first column of
+                // the first row of data
+                // that is your contact's name
+                cursor.moveToFirst()
+                val contactNumberIndex =
+                    cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
+                val contactNumber = cursor.getString(contactNumberIndex).apply {
+                    //Replacing the brackets and hyphens with empty string as we don't need here
+                    this.replace(
+                        Regex("[()\\-\\s]+"),
+                        ""
+                    )
                 }
-            } else {
-                // Handle the case where the cursor is empty
-                Log.e("ContactPicker", "Cursor is empty")
+                pickedContact?.setText(contactNumber)
             }
-        }
     }
 
 
@@ -364,20 +362,9 @@ class ProductDetailActivity : AppCompatActivity() {
 
     private fun bindContactPickerActivityForResult() {
         startContactActivityForResult = registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ) { result ->
-            if (result.resultCode == RESULT_OK) {
-                val data = result.data
-                if (data != null) {
-                    fetchContactNumberFromData(data)
-                } else {
-                    // Handle the case where the data is null
-                    // This may occur if the user cancels the contact picker
-                    // You can provide an appropriate message or behavior here
-                }
-            } else {
-                // Handle the case where the user didn't select a contact
-                // You can provide an appropriate message or behavior here
+            ActivityResultContracts.StartActivityForResult()) {
+            if (it != null) {
+                fetchContactNumberFromData(it.data!!)
             }
         }
     }
