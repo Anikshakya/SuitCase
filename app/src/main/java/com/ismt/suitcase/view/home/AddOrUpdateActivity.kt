@@ -47,10 +47,10 @@ class AddOrUpdateActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         //Bindings
         addOrUpdateBinding = ActivityAddOrUpdateBinding.inflate(layoutInflater)
-        setContentView(addOrUpdateBinding.root)
         bindCustomCameraActivityForResult()
         bindGalleryActivityForResult()
         bindMapsActivityForResult()
+        setContentView(addOrUpdateBinding.root)
 
         // Received data
         receivedProduct = intent.getParcelableExtra<Product>(AppConstants.KEY_PRODUCT)

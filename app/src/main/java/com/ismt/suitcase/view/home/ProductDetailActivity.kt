@@ -40,7 +40,6 @@ class ProductDetailActivity : AppCompatActivity() {
     private var product: Product? = null
     private var position: Int = -1
     private var pickedContact: TextInputEditText? = null
-
     private lateinit var startAddItemActivity: ActivityResultLauncher<Intent>
     private lateinit var startContactActivityForResult: ActivityResultLauncher<Intent>
 
@@ -53,6 +52,8 @@ class ProductDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         detailViewBinding = ActivityProductDetailBinding.inflate(layoutInflater)
         setContentView(detailViewBinding.root)
+
+        // Register the ActivityResultLaunchers
         bindAddOrUpdateActivityForResult()
         bindContactPickerActivityForResult()
 

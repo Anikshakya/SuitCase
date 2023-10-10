@@ -12,10 +12,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.widget.SearchView
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.view.menu.MenuAdapter
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ismt.suitcase.R
 import com.ismt.suitcase.constants.AppConstants
@@ -32,38 +31,23 @@ import kotlinx.coroutines.launch
 class ShopFragment : Fragment(), ProductRecyclerAdapter.ProductAdapterListener {
     private lateinit var shopBinding: FragmentShopBinding
     private lateinit var productRecyclerAdapter: ProductRecyclerAdapter
-    private lateinit var searchView: SearchView
     private lateinit var searchEditText: EditText
 
-    private val startAddOrUpdateActivityForResult = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()) {
-        if (it.resultCode == AddOrUpdateActivity.RESULT_CODE_COMPLETE) {
-            setUpRecyclerView()
-        } else {
-            //TODO Do nothing
-        }
-    }
-
-    private val startDetailViewActivity = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) {
-        if (it.resultCode == ProductDetailActivity.RESULT_CODE_REFRESH) {
-            setUpRecyclerView()
-        } else {
-            //Do Nothing
-        }
-    }
+    private lateinit var startAddOrUpdateActivityForResult: ActivityResultLauncher<Intent>
+    private lateinit var startDetailViewActivity: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-    }
+        startAddOrUpdateActivityForResult = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == AddOrUpdateActivity.RESULT_CODE_COMPLETE) {
+                setUpRecyclerView()
+            } else {
+                //TODO Do nothing
+            }
+        }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-
-        registerForActivityResult(
+        startDetailViewActivity = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
         ) {
             if (it.resultCode == ProductDetailActivity.RESULT_CODE_REFRESH) {
@@ -72,7 +56,12 @@ class ShopFragment : Fragment(), ProductRecyclerAdapter.ProductAdapterListener {
                 //Do Nothing
             }
         }
+    }
 
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         shopBinding = FragmentShopBinding.inflate(layoutInflater, container, false)
         // Inflate the layout for this fragment
         setUpViews()

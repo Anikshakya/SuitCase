@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -41,13 +42,21 @@ class ProfileFragment : Fragment() {
             .build()
         gsc = GoogleSignIn.getClient(requireActivity(), gso)
         val account = GoogleSignIn.getLastSignedInAccount(requireActivity())
-        if(account!!.displayName != null && account!!.displayName.toString() != ""){
-            profileBinding.userName.text = account!!.displayName.toString()
-        } else {
-            profileBinding.userName.text = "John Doe"
+
+        if (account != null) {
+            if (account.displayName != null && account.displayName.toString() != "") {
+                profileBinding.userName.text = account.displayName.toString()
+            } else {
+                profileBinding.userName.text = "John Doe"
+            }
+            val email = account.email?.toString()
+            val photoUrl = account.photoUrl
+
+            profileBinding.tvEmail.text = email
+            if (photoUrl != null) {
+                Glide.with(requireActivity()).load(photoUrl).into(profileBinding.ivItemImage)
+            }
         }
-        profileBinding.tvEmail.text = account!!.email.toString()
-//        Glide.with(requireActivity()).load(account!!.photoUrl).into(profileBinding.ivItemImage)
 
         //Logout Button Behaviour
         profileBinding.btnLogout.setOnClickListener {

@@ -5,10 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.bumptech.glide.Glide
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.ismt.suitcase.R
 import com.ismt.suitcase.databinding.FragmentExploreBinding
-import com.ismt.suitcase.databinding.FragmentProfileBinding
 
 class ExploreFragment : Fragment() {
     private lateinit var exploreFragment: FragmentExploreBinding
@@ -23,10 +22,18 @@ class ExploreFragment : Fragment() {
     ): View? {
         exploreFragment = FragmentExploreBinding.inflate(layoutInflater, container, false)
         val account = GoogleSignIn.getLastSignedInAccount(requireActivity())
-        if(account!!.displayName != null && account!!.displayName.toString() != ""){
-            exploreFragment.tvGreetings.text = "Hi " + account!!.displayName.toString().split(" ")[0]
-        } else {
-            exploreFragment.tvGreetings.text = "Welcome"
+
+        if (account != null) {
+            if (account.displayName != null && account.displayName.toString() != "") {
+                exploreFragment.tvGreetings.text = "Hi " + account.displayName.toString().split(" ")[0]
+            } else {
+                exploreFragment.tvGreetings.text = "Welcome"
+            }
+
+            val photoUrl = account.photoUrl
+            if (photoUrl != null) {
+                Glide.with(requireActivity()).load(photoUrl).into(exploreFragment.ivItemImage)
+            }
         }
 
         // Inflate the layout for this fragment
