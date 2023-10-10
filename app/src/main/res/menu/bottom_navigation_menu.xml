@@ -10,8 +10,8 @@
     <item
         android:id="@+id/shop"
         android:enabled="true"
-        android:icon="@drawable/ic_plan"
-        android:title="Shop" />
+        android:icon="@drawable/ic_suitcase"
+        android:title="SuitCase" />
 
     <item
         android:id="@+id/profile"

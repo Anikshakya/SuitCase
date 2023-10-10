@@ -26,13 +26,13 @@
             android:text="SuitCase"
             android:textStyle="bold"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textSize="24sp"/>
+            android:textSize="26sp"/>
 
         <TextView
             android:id="@+id/tv_shop_heading2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="List of your items."
+            android:text="Pack your items for the holidays"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textSize="14sp"/>
 

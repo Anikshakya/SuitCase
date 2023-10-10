@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Anik/Ismt Assignments/AMD assignment (Anik Shakya)/SuitCase/app/src/main/res/drawable/background_gradient.xml" value="0.132" />
+        <entry key="..\:/Anik/Ismt Assignments/AMD assignment (Anik Shakya)/SuitCase/app/src/main/res/drawable/bottom_nav_rounded.xml" value="0.132" />
         <entry key="..\:/Anik/Ismt Assignments/AMD assignment (Anik Shakya)/SuitCase/app/src/main/res/drawable/bubble_background.xml" value="0.132" />
         <entry key="..\:/Anik/Ismt Assignments/AMD assignment (Anik Shakya)/SuitCase/app/src/main/res/drawable/circular.xml" value="0.132" />
         <entry key="..\:/Anik/Ismt Assignments/AMD assignment (Anik Shakya)/SuitCase/app/src/main/res/drawable/ic_cancel.xml" value="0.132" />
@@ -15,13 +16,14 @@
         <entry key="..\:/Anik/Ismt Assignments/AMD assignment (Anik Shakya)/SuitCase/app/src/main/res/drawable/neumorphic_background.xml" value="0.106" />
         <entry key="..\:/Anik/Ismt Assignments/AMD assignment (Anik Shakya)/SuitCase/app/src/main/res/drawable/radius.xml" value="0.132" />
         <entry key="..\:/Anik/Ismt Assignments/AMD assignment (Anik Shakya)/SuitCase/app/src/main/res/drawable/rounded_button.xml" value="0.1315" />
+        <entry key="..\:/Anik/Ismt Assignments/AMD assignment (Anik Shakya)/SuitCase/app/src/main/res/drawable/rounded_corner_location.xml" value="0.132" />
         <entry key="..\:/Anik/Ismt Assignments/AMD assignment (Anik Shakya)/SuitCase/app/src/main/res/drawable/rounded_product_tile.xml" value="0.1305" />
         <entry key="..\:/Anik/Ismt Assignments/AMD assignment (Anik Shakya)/SuitCase/app/src/main/res/drawable/rounded_search.xml" value="0.106" />
         <entry key="..\:/Anik/Ismt Assignments/AMD assignment (Anik Shakya)/SuitCase/app/src/main/res/drawable/rounded_shop_header.xml" value="0.106" />
         <entry key="..\:/Anik/Ismt Assignments/AMD assignment (Anik Shakya)/SuitCase/app/src/main/res/layout/activity_add_and_update.xml" value="0.1" />
         <entry key="..\:/Anik/Ismt Assignments/AMD assignment (Anik Shakya)/SuitCase/app/src/main/res/layout/activity_add_or_update.xml" value="0.20392156862745098" />
         <entry key="..\:/Anik/Ismt Assignments/AMD assignment (Anik Shakya)/SuitCase/app/src/main/res/layout/activity_custom_camera.xml" value="0.20199275362318841" />
-        <entry key="..\:/Anik/Ismt Assignments/AMD assignment (Anik Shakya)/SuitCase/app/src/main/res/layout/activity_dashboard.xml" value="0.12864583333333332" />
+        <entry key="..\:/Anik/Ismt Assignments/AMD assignment (Anik Shakya)/SuitCase/app/src/main/res/layout/activity_dashboard.xml" value="0.25" />
         <entry key="..\:/Anik/Ismt Assignments/AMD assignment (Anik Shakya)/SuitCase/app/src/main/res/layout/activity_forgot_password.xml" value="0.21331521739130435" />
         <entry key="..\:/Anik/Ismt Assignments/AMD assignment (Anik Shakya)/SuitCase/app/src/main/res/layout/activity_home.xml" value="0.21331521739130435" />
         <entry key="..\:/Anik/Ismt Assignments/AMD assignment (Anik Shakya)/SuitCase/app/src/main/res/layout/activity_login.xml" value="0.1" />
