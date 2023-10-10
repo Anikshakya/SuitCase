@@ -2,10 +2,10 @@ package com.ismt.suitcase.view.home.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -15,6 +15,7 @@ import com.ismt.suitcase.constants.AppConstants
 import com.ismt.suitcase.databinding.FragmentProfileBinding
 import com.ismt.suitcase.utils.SharedPrefUtils
 import com.ismt.suitcase.view.LoginActivity
+
 
 class ProfileFragment : Fragment() {
     private lateinit var profileBinding : FragmentProfileBinding
@@ -29,6 +30,8 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        profileBinding = FragmentProfileBinding.inflate(layoutInflater, container, false)
+
         //----------Bindings----------
         var sharedPref = SharedPrefUtils(requireActivity())
         //For Google Sign Out
@@ -37,7 +40,14 @@ class ProfileFragment : Fragment() {
             .requestEmail()
             .build()
         gsc = GoogleSignIn.getClient(requireActivity(), gso)
-        profileBinding = FragmentProfileBinding.inflate(layoutInflater, container, false)
+        val account = GoogleSignIn.getLastSignedInAccount(requireActivity())
+        if(account!!.displayName != null && account!!.displayName.toString() != ""){
+            profileBinding.userName.text = account!!.displayName.toString()
+        } else {
+            profileBinding.userName.text = "John Doe"
+        }
+        profileBinding.tvEmail.text = account!!.email.toString()
+//        Glide.with(requireActivity()).load(account!!.photoUrl).into(profileBinding.ivItemImage)
 
         //Logout Button Behaviour
         profileBinding.btnLogout.setOnClickListener {

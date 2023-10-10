@@ -5,9 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.ismt.suitcase.R
+import com.ismt.suitcase.databinding.FragmentExploreBinding
+import com.ismt.suitcase.databinding.FragmentProfileBinding
 
 class ExploreFragment : Fragment() {
+    private lateinit var exploreFragment: FragmentExploreBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,8 +21,16 @@ class ExploreFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        exploreFragment = FragmentExploreBinding.inflate(layoutInflater, container, false)
+        val account = GoogleSignIn.getLastSignedInAccount(requireActivity())
+        if(account!!.displayName != null && account!!.displayName.toString() != ""){
+            exploreFragment.tvGreetings.text = "Hi " + account!!.displayName.toString().split(" ")[0]
+        } else {
+            exploreFragment.tvGreetings.text = "Welcome"
+        }
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_explore, container, false)
+        return exploreFragment.root
     }
 
     companion object {

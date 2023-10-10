@@ -1,6 +1,7 @@
 package com.ismt.suitcase.view.home
 
 import android.Manifest
+import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
@@ -364,12 +365,22 @@ class ProductDetailActivity : AppCompatActivity() {
 
     private fun bindContactPickerActivityForResult() {
         startContactActivityForResult = registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()) {
-            if (it != null) {
-                fetchContactNumberFromData(it.data!!)
+            ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val data = result.data
+                if (data != null) {
+                    fetchContactNumberFromData(data)
+                } else {
+                    // Handle the case where data is null (e.g., user canceled)
+                    // You can display a message to the user or take appropriate action here.
+                }
+            } else {
+                // Handle the case where the contact selection activity returned a non-OK result
+                // You can display a message to the user or take appropriate action here.
             }
         }
     }
+
 
     // Mark as purchased
     private fun setUpMarkAsPurchasedCheckbox() {

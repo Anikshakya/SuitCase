@@ -30,10 +30,11 @@ android:layout_height="match_parent">
             app:shapeAppearanceOverlay="@style/circularImageView" />
 
         <TextView
+            android:id="@+id/tv_greetings"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Hi Muna"
+            android:text="Hi John"
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_marginTop="4dp"
