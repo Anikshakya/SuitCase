@@ -7,29 +7,29 @@
     android:background="@color/black"
     tools:context=".SplashScreenActivity">
 
-    <ImageView
-        android:id="@+id/logoWhite"
-        android:layout_width="wrap_content"
-        android:layout_height="150dp"
-        android:layout_marginTop="260dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo_white" />
-
     <TextView
         android:id="@+id/textView2"
         android:layout_width="193dp"
         android:layout_height="62dp"
+        android:layout_marginTop="368dp"
         android:text="@string/app_name"
+        android:textColor="#DAD6D6"
         android:textSize="35sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.605"
+        app:layout_constraintHorizontal_bias="0.871"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/logoWhite"
+        android:layout_width="200dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="308dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.132"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.576" />
+        app:srcCompat="@drawable/logo_white" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

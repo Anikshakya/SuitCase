@@ -14,8 +14,12 @@ import com.google.firebase.auth.FirebaseAuth
 import com.ismt.suitcase.R
 import com.ismt.suitcase.constants.AppConstants
 import com.ismt.suitcase.databinding.FragmentProfileBinding
+import com.ismt.suitcase.room.SuitcaseDatabase
 import com.ismt.suitcase.utils.SharedPrefUtils
 import com.ismt.suitcase.view.LoginActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class ProfileFragment : Fragment() {
@@ -66,6 +70,13 @@ class ProfileFragment : Fragment() {
 
             gsc.signOut() //Google Sign Out
             FirebaseAuth.getInstance().signOut() //Firebase Sign Out
+
+            // Clear all products from Room database
+            val productDao = SuitcaseDatabase.getInstance(requireContext()).productDao()
+            CoroutineScope(Dispatchers.IO).launch {
+                productDao.clearAllProducts()
+            }
+
             val intent = Intent(requireActivity(), LoginActivity :: class.java)
             startActivity(intent)
         }
