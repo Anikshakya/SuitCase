@@ -338,11 +338,11 @@ class AddOrUpdateActivity : AppCompatActivity() {
                     contentResolver,
                     Uri.parse(imageUriPath)
                 )
-                bitmap = BitmapScalar.stretchToFill(
-                    bitmap,
-                    addOrUpdateBinding.ivAddImage.width,
-                    addOrUpdateBinding.ivAddImage.height
-                )
+//                bitmap = BitmapScalar.stretchToFill(
+//                    bitmap,
+//                    addOrUpdateBinding.ivAddImage.width,
+//                    addOrUpdateBinding.ivAddImage.height
+//                )
                 addOrUpdateBinding.ivAddImage.setImageBitmap(bitmap)
             } catch (e: IOException) {
                 e.printStackTrace()

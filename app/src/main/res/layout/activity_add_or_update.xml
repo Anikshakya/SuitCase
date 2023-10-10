@@ -48,7 +48,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="20dp"
-            android:background="@drawable/no_image"
+            android:background="@drawable/upload_image"
             android:scaleType="centerCrop"
             app:shapeAppearanceOverlay="@style/curvedImageView" />
 

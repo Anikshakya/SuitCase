@@ -27,7 +27,7 @@ class ExploreFragment : Fragment() {
             if (account.displayName != null && account.displayName.toString() != "") {
                 exploreFragment.tvGreetings.text = "Hi " + account.displayName.toString().split(" ")[0]
             } else {
-                exploreFragment.tvGreetings.text = "Welcome"
+                exploreFragment.tvGreetings.text = "Hi there!"
             }
 
             val photoUrl = account.photoUrl
