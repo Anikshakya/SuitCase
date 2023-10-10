@@ -36,20 +36,44 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textSize="14sp"/>
 
-        <EditText
-            android:id="@+id/editTextSearch"
-            android:layout_width = "match_parent"
-            android:layout_height="45dp"
+        <LinearLayout
+            android:id="@+id/searchBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:background="@drawable/rounded_search"
-            android:hint="Search"
-            android:inputType="text"
-            android:drawableStart="@drawable/ic_search"
-            android:drawablePadding="8dp"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"/>
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_search"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="8dp"
+                app:tint="@color/grey" />
+
+            <EditText
+                android:id="@+id/editTextSearch"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="Search..."
+                android:inputType="text"
+                android:textColorHint="@color/grey"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:paddingStart="8dp"
+                android:paddingEnd="16dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp" />
+        </LinearLayout>
+
+
 
     </LinearLayout>
 

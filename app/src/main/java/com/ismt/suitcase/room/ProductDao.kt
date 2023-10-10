@@ -17,6 +17,9 @@ interface ProductDao {
     @Update
     fun updateProduct(product: Product)
 
+    @Query("SELECT * FROM product WHERE title LIKE :searchQuery")
+    fun searchDatabase(searchQuery: String): List<Product>
+
     @Query("Select * from product")
     fun getAllProducts(): List<Product>
 }
