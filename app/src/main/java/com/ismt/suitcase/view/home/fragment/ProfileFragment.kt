@@ -2,6 +2,7 @@ package com.ismt.suitcase.view.home.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -64,21 +65,30 @@ class ProfileFragment : Fragment() {
 
         //Logout Button Behaviour
         profileBinding.btnLogout.setOnClickListener {
-            //Clear saved user login state
-            sharedPref.removeKey(AppConstants.KEY_IS_LOGGED_IN)
-            sharedPref.removeKey(AppConstants.KEY_EMAIL)
+            // Show loading state
+            startLoading()
 
-            gsc.signOut() //Google Sign Out
-            FirebaseAuth.getInstance().signOut() //Firebase Sign Out
+            // Delay for 3 seconds (3000 milliseconds)
+            Handler().postDelayed({
+                // Clear saved user login state
+                sharedPref.removeKey(AppConstants.KEY_IS_LOGGED_IN)
+                sharedPref.removeKey(AppConstants.KEY_EMAIL)
 
-            // Clear all products from Room database
-            val productDao = SuitcaseDatabase.getInstance(requireContext()).productDao()
-            CoroutineScope(Dispatchers.IO).launch {
-                productDao.clearAllProducts()
-            }
+                gsc.signOut() // Google Sign Out
+                FirebaseAuth.getInstance().signOut() // Firebase Sign Out
 
-            val intent = Intent(requireActivity(), LoginActivity :: class.java)
-            startActivity(intent)
+                // Clear all products from Room database
+                val productDao = SuitcaseDatabase.getInstance(requireContext()).productDao()
+                CoroutineScope(Dispatchers.IO).launch {
+                    productDao.clearAllProducts()
+                }
+
+                // Hide loading state
+                stopLoading()
+
+                val intent = Intent(requireActivity(), LoginActivity::class.java)
+                startActivity(intent)
+            }, 2000) // Delay for 3 seconds
         }
 
         //Set the Text view value from stored email data
@@ -86,6 +96,22 @@ class ProfileFragment : Fragment() {
 
         // Inflate the layout for this fragment
         return profileBinding.root
+    }
+
+    //Start Loading
+    private fun startLoading(){
+        //Display Loading
+        profileBinding.pbLogoutLoading.visibility = View.VISIBLE
+        //Hide logout Button on loading
+        profileBinding.btnLogout.visibility = View.GONE
+    }
+
+    //Stop Loading
+    private fun stopLoading(){
+        //Hide Loading
+        profileBinding.pbLogoutLoading.visibility = View.GONE
+        //Display logout Button on loading
+        profileBinding.btnLogout.visibility = View.VISIBLE
     }
 
     companion object {
