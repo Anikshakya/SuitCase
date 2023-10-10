@@ -16,7 +16,8 @@ data class Product(
     val description: String,
     val image: String?,
     val date: String?,
-    val location: String?
+    val location: String?,
+    var isPurchased: Boolean? = false
 ): Parcelable {
     constructor(
         title: String,
@@ -24,6 +25,7 @@ data class Product(
         description: String,
         image: String?,
         date: String?,
-        location: String?
-    ): this(0, title, price, description, image, date, location)
+        location: String?,
+        isPurchased: Boolean?
+    ): this(0, title, price, description, image, date, location, isPurchased)
 }

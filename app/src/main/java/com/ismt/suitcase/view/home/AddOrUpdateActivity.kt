@@ -59,6 +59,7 @@ class AddOrUpdateActivity : AppCompatActivity() {
             addOrUpdateBinding.tieTitle.setText(this.title)
             addOrUpdateBinding.tiePrice.setText(this.price)
             addOrUpdateBinding.tieDescription.setText(this.description)
+            addOrUpdateBinding.cbPurchased.isChecked = (this.isPurchased == true)
 
             // For location
             var productLocation = this.location;
@@ -112,6 +113,7 @@ class AddOrUpdateActivity : AppCompatActivity() {
             var title = addOrUpdateBinding.tieTitle.text.toString().trim()
             var price = addOrUpdateBinding.tiePrice.text.toString().trim()
             var desc = addOrUpdateBinding.tieDescription.text.toString().trim()
+            val isPurchased = addOrUpdateBinding.cbPurchased.isChecked
 
             // Validation: Check if fields are not empty
             if (title.isEmpty()) {
@@ -147,7 +149,8 @@ class AddOrUpdateActivity : AppCompatActivity() {
                 desc,
                 imageUriPath,
                 currentDate,
-                productLocation
+                productLocation,
+                isPurchased
             )
 
             // Set the id of the stored product in case of update

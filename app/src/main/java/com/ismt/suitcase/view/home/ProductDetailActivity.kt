@@ -94,6 +94,7 @@ class ProductDetailActivity : AppCompatActivity() {
             detailViewBinding.productTitle.text = this.title
             detailViewBinding.productPrice.text = "$"+this.price
             detailViewBinding.productDescription.text = this.description
+            detailViewBinding.cbPurchased.isChecked = (product?.isPurchased == true)
 
             // For location
             var productLocation = this.location;
@@ -133,6 +134,7 @@ class ProductDetailActivity : AppCompatActivity() {
         setUpEditButton()
         setUpDeleteButton()
         setUpShareButton()
+        setUpMarkAsPurchasedCheckbox()
     }
 
     // Back Button Behavior
@@ -367,6 +369,60 @@ class ProductDetailActivity : AppCompatActivity() {
                 fetchContactNumberFromData(it.data!!)
             }
         }
+    }
+
+    // Mark as purchased
+    private fun setUpMarkAsPurchasedCheckbox() {
+        detailViewBinding.cbPurchased.setOnCheckedChangeListener { _, isChecked ->
+            handleCheckChangedForMarkAsPurchased(
+                isChecked
+            )
+        }
+    }
+
+    private fun handleCheckChangedForMarkAsPurchased(isChecked: Boolean) {
+        if (isChecked) {
+            updateProductWithMarkAsPurchasedTrue()
+        } else {
+            updateProductWithMarkAsPurchasedFalse()
+        }
+    }
+
+    private fun updateProductWithMarkAsPurchasedTrue() {
+        product?.isPurchased = true
+        updateProductDataInDb(product)
+    }
+
+    private fun updateProductWithMarkAsPurchasedFalse() {
+        product?.isPurchased = false
+        updateProductDataInDb(product)
+    }
+
+    private fun updateProductDataInDb(product: Product?) {
+        val testDatabase = SuitcaseDatabase.getInstance(this.applicationContext)
+        val productDao = testDatabase.productDao()
+
+        Thread {
+            try {
+                product?.apply {
+                    productDao.updateProduct(this)
+                    runOnUiThread {
+                        ToastUtils.showToast(
+                            this@ProductDetailActivity,
+                            "Product updated successfully"
+                        )
+                    }
+                }
+            } catch (exception: Exception) {
+                exception.printStackTrace()
+                runOnUiThread {
+                    ToastUtils.showToast(
+                        this@ProductDetailActivity,
+                        "Cannot update product."
+                    )
+                }
+            }
+        }.start()
     }
 
 

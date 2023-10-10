@@ -82,6 +82,14 @@
                 android:scaleType="centerCrop"
                 app:shapeAppearanceOverlay="@style/curvedImageView" />
 
+            <CheckBox
+                android:id="@+id/cb_purchased"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Mark as Purchased"
+                android:paddingStart="0dp"
+                android:layout_marginTop="16dp"/>
+
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

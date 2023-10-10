@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.ismt.suitcase.R
 import com.ismt.suitcase.room.Product
@@ -66,6 +67,13 @@ class ProductRecyclerAdapter(
         holder.itemRootLayout.setOnClickListener {
             listener.onItemClicked(products[position], position)
         }
+        if (products[position].isPurchased == true) {
+            val drawable = ContextCompat.getDrawable(context, R.drawable.ic_check_circle)
+            holder.itemTitle.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null)
+        } else {
+            holder.itemTitle.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
+        }
+
         holder.itemImage.post {
             var bitmap: Bitmap?
             try {
