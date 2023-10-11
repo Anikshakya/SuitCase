@@ -282,7 +282,7 @@ class ProductDetailActivity : AppCompatActivity() {
 
         val message = """
         Item: ${product!!.title}
-        Price: "$"+${product!!.price}
+        Price: ${"$"+product!!.price}
         Description: $description
         """.trimIndent()
 //        smsManager.sendTextMessage(

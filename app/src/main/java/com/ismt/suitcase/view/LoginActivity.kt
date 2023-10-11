@@ -196,6 +196,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+
     //Start Loading
     private fun startLoading(){
         //Display Loading
