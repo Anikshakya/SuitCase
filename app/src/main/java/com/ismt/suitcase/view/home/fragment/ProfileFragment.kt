@@ -51,17 +51,24 @@ class ProfileFragment : Fragment() {
         if (account != null) {
             if (account.displayName != null && account.displayName.toString() != "") {
                 profileBinding.userName.text = account.displayName.toString()
+                profileBinding.tvName.text = account.displayName.toString()
             } else {
-                profileBinding.userName.text = "John Doe"
+                profileBinding.userName.text = "Suitcase User"
+                profileBinding.tvName.text = "Suitcase User"
             }
             val email = account.email?.toString()
             val photoUrl = account.photoUrl
 
             profileBinding.tvEmail.text = email
+            profileBinding.tvUserEmail.text = email
             if (photoUrl != null) {
                 Glide.with(requireActivity()).load(photoUrl).into(profileBinding.ivItemImage)
             }
         }
+
+        //Set the Text view value from stored email data
+        profileBinding.tvEmail.text = sharedPref.getString(AppConstants.KEY_EMAIL)
+        profileBinding.tvUserEmail.text = sharedPref.getString(AppConstants.KEY_EMAIL)
 
         //Logout Button Behaviour
         profileBinding.btnLogout.setOnClickListener {
@@ -88,12 +95,11 @@ class ProfileFragment : Fragment() {
 
                 val intent = Intent(requireActivity(), LoginActivity::class.java)
                 startActivity(intent)
+
+                // Finish the current activity to prevent going back
+                requireActivity().finish()
             }, 2000) // Delay for 3 seconds
         }
-
-        //Set the Text view value from stored email data
-        profileBinding.tvEmail.text = sharedPref.getString(AppConstants.KEY_EMAIL)
-
         // Inflate the layout for this fragment
         return profileBinding.root
     }
