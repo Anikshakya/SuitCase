@@ -3,6 +3,7 @@ package com.ismt.suitcase.view
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Patterns
 import android.view.View
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -59,19 +60,27 @@ class LoginActivity : AppCompatActivity() {
             val email = viewBinding.etEmail.text.toString().trim()
             val password = viewBinding.etPassword.text.toString().trim()
 
-            if(email.isEmpty()){
-                ToastUtils.showToast(this, "Enter a valid Email")
+            // Regular expression for a valid email address
+            val emailPattern = Patterns.EMAIL_ADDRESS.toRegex()
+
+            if (!emailPattern.matches(email)) {
+                viewBinding.etEmail?.setError("Invalid email format")
                 return@setOnClickListener
+            } else {
+                viewBinding.etEmail?.error = null // Clear the error
             }
 
-            if(password.isEmpty()){
-                ToastUtils.showToast(this, "Password cannot be empty")
+            if (password.isEmpty()) {
+                viewBinding.etPassword.setError("Enter a password")
                 return@setOnClickListener
+            } else {
+                viewBinding.etPassword.error = null // Clear the error
             }
 
-            //Login Using Firebase
+            // Login Using Firebase
             loginWithFirebase(email, password)
         }
+
 
         //Google Sign In Button On Click
         viewBinding.btnGoogleSignIn.setOnClickListener{

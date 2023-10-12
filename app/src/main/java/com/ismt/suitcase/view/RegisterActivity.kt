@@ -4,6 +4,7 @@ import ToastUtils
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Patterns
 import android.view.View
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -33,30 +34,40 @@ class RegisterActivity : AppCompatActivity() {
             val email = viewBinding.etEmail.text.toString().trim()
             val password = viewBinding.etPassword.text.toString().trim()
             val confirmPassword = viewBinding.etConfirmPassword.text.toString().trim()
+            // Regular expression for a valid email address
+            val emailPattern = Patterns.EMAIL_ADDRESS.toRegex()
 
-            if(name.isEmpty()){
-                ToastUtils.showToast(this, "Please enter your Name")
-                return@setOnClickListener
+            if (name.isEmpty()) {
+                viewBinding.etName.error = "Name is required"
+            } else {
+                viewBinding.etName.error = null // Clear the error
             }
 
-            if(email.isEmpty()){
-                ToastUtils.showToast(this, "Email required")
-                return@setOnClickListener
+            if (email.isEmpty()) {
+                viewBinding.etEmail.error = "Email is required"
+            } else if (!emailPattern.matches(email)) {
+                viewBinding.etEmail.error = "Invalid email format"
+            } else {
+                viewBinding.etEmail.error = null // Clear the error
             }
 
-            if(password.isEmpty()){
-                ToastUtils.showToast(this, "Password required")
-                return@setOnClickListener
+            if (password.isEmpty()) {
+                viewBinding.etPassword.error = "Password is required"
+            } else {
+                viewBinding.etPassword.error = null // Clear the error
             }
 
-            if(password != confirmPassword){
-                ToastUtils.showToast(this, "The Password does not match")
+            if (password.isNotEmpty() && password != confirmPassword) {
+                viewBinding.etConfirmPassword.error = "Passwords do not match"
+            } else {
+                viewBinding.etConfirmPassword.error = null // Clear the error
             }
-            else{
-                //Register Using Firebase
+
+            if (email.isNotEmpty() && emailPattern.matches(email) && password.isNotEmpty() && password == confirmPassword) {
+                // Register Using Firebase
                 firebaseRegister(name, email, password)
 
-//                //Run Room database in new thread to stop screen freeze and rec by room
+                //Run Room database in new thread to stop screen freeze and rec by room
 //                Thread{
 //                    try {
 //                        //Data from register form
@@ -97,13 +108,6 @@ class RegisterActivity : AppCompatActivity() {
 
         //Login Here Onclick Behaviour
         viewBinding.tvLoginHere.setOnClickListener {
-            val intent = Intent(this, LoginActivity :: class.java)
-            startActivity(intent)
-            finish()
-        }
-
-        //Back button onclick
-        viewBinding.ibBack.setOnClickListener {
             val intent = Intent(this, LoginActivity :: class.java)
             startActivity(intent)
             finish()

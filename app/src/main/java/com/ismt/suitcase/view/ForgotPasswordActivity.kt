@@ -3,12 +3,8 @@ package com.ismt.suitcase.view
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ProgressBar
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.ismt.suitcase.R
@@ -19,6 +15,7 @@ class ForgotPasswordActivity : AppCompatActivity() {//Initialization
     private lateinit var btnForgotPassword : Button
     private lateinit var etEmail : EditText
     private lateinit var pbForgotPassword : ProgressBar
+    private lateinit var btnBack : ImageButton
     private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,43 +27,54 @@ class ForgotPasswordActivity : AppCompatActivity() {//Initialization
         btnForgotPassword = findViewById(R.id.btn_resetPasswordButton)
         etEmail = findViewById(R.id.et_email)
         pbForgotPassword = findViewById(R.id.pb_forgotPasswordLoading)
+        btnBack = findViewById(R.id.ib_back)
 
-        //Forgot Password Onclick Behaviour
+        // Forgot Password Onclick Behaviour
         btnForgotPassword.setOnClickListener {
-            //Start Loading
-            startLoading();
+            // Start Loading
+            startLoading()
             val email = etEmail.text.toString().trim()
-            if(email.isEmpty()){
+
+            if (email.isEmpty()) {
+                etEmail.error = "Enter a valid Email"
                 ToastUtils.showToast(this, "Enter a valid Email")
-                return@setOnClickListener
+                stopLoading()
+            } else {
+                // Send Reset Email
+                auth.sendPasswordResetEmail(email)
+                    .addOnCompleteListener(OnCompleteListener<Void?> { task ->
+                        if (task.isSuccessful) {
+                            stopLoading()
+                            // Password reset email sent successfully
+                            Toast.makeText(
+                                applicationContext,
+                                "Password reset email sent",
+                                Toast.LENGTH_SHORT
+                            ).show()
+
+                            // Navigate to Login on Success
+                            val intent = Intent(this, LoginActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        } else {
+                            stopLoading()
+                            // Password reset email failed to send
+                            Toast.makeText(
+                                applicationContext,
+                                "Password reset email failed to send",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    })
             }
+        }
 
-            // Send Reset Email
-            auth.sendPasswordResetEmail(email)
-            .addOnCompleteListener(OnCompleteListener<Void?> { task ->
-                if (task.isSuccessful) {
-                    stopLoading();
-                    // Password reset email sent successfully
-                    Toast.makeText(
-                        applicationContext,
-                        "Password reset email sent",
-                        Toast.LENGTH_SHORT
-                    ).show()
 
-                    //Navigate to Login on Success
-                    val intent = Intent(this, LoginActivity :: class.java)
-                    startActivity(intent)
-                    finish()
-                } else {
-                    stopLoading();
-                    // Password reset email failed to send
-                    Toast.makeText(
-                        applicationContext,
-                        "Password reset email failed to send",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            })
+        //Back button onclick
+        btnBack.setOnClickListener {
+            val intent = Intent(this, LoginActivity :: class.java)
+            startActivity(intent)
+            finish()
         }
     }
 
